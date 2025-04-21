@@ -1,3 +1,4 @@
+
 package ui;
 
 import java.awt.BorderLayout;
@@ -22,6 +23,8 @@ public class GiaoDien extends JFrame implements ActionListener{
 	JPanel cardPanel;
 	JButton btnSanPham;
 	JButton btnHoaDon;
+	private JButton btnThongKe;
+	private JButton btnNhanVien;
 	
 	public GiaoDien() {
 		this.setTitle("Quản lý quán coffee");
@@ -45,8 +48,8 @@ public class GiaoDien extends JFrame implements ActionListener{
 		btnBanHang = new JButton("Bán hàng");
 		btnHoaDon = new JButton("Hóa đơn");
 		btnSanPham = new JButton("Sản phẩm");
-		JButton btnThongKe = new JButton("Thống kê");
-		JButton btnNhanVien = new JButton("Nhân viên");
+		btnThongKe = new JButton("Thống kê");
+		btnNhanVien = new JButton("Nhân viên");
 		
 		pLogo.add(lblLogo);
 		pNav.add(btnTrangChu);
@@ -67,6 +70,9 @@ public class GiaoDien extends JFrame implements ActionListener{
 		BanHang card2 = new BanHang();
 		QuanLySanPham card3 = new QuanLySanPham();
 		QuanLyHoaDon card4 = new QuanLyHoaDon();
+		ThongKe card5 = new ThongKe();
+		QuanLyNhanVien card6 = new QuanLyNhanVien();
+		
 		
 		
 		// Thêm card vào panel với tên định danh
@@ -74,6 +80,8 @@ public class GiaoDien extends JFrame implements ActionListener{
 		cardPanel.add(card2, "Card2");
 		cardPanel.add(card3, "Card3");
 		cardPanel.add(card4, "Card4");
+		cardPanel.add(card5, "Card5");
+		cardPanel.add(card6, "Card6");
 
 		// Hiển thị card cụ thể
 		cardLayout.show(cardPanel, "Card1");
@@ -83,14 +91,15 @@ public class GiaoDien extends JFrame implements ActionListener{
 		btnBanHang.addActionListener(this);
 		btnSanPham.addActionListener(this);
 		btnHoaDon.addActionListener(this);
+		btnThongKe.addActionListener(this);
+		btnNhanVien.addActionListener(this);
+		
 		
 		
 		this.add(pWest, BorderLayout.WEST);
 		this.add(cardPanel, BorderLayout.CENTER);
 		this.setVisible(true);
 	}
-	
-	
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
@@ -105,6 +114,12 @@ public class GiaoDien extends JFrame implements ActionListener{
 		}
 		if(e.getSource() == btnHoaDon) {
 			cardLayout.show(cardPanel, "Card4");
+		}
+		if(e.getSource() == btnThongKe) {
+			cardLayout.show(cardPanel, "Card5");
+		}
+		if(e.getSource() == btnNhanVien) {
+			cardLayout.show(cardPanel, "Card6");
 		}
 	}
 
