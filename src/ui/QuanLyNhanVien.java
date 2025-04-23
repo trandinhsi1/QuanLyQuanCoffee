@@ -2,12 +2,15 @@ package ui;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JScrollPane;
@@ -16,7 +19,12 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 
-public class QuanLyNhanVien extends JPanel {
+import dao.NhanVienDAO;
+import entity.ChucVu;
+import entity.NhanVien;
+import entity.TaiKhoan;
+
+public class QuanLyNhanVien extends JPanel implements ActionListener {
 	private JLabel lblQLNV;
 	private JSplitPane split;
 	private JPanel pnlLeft;
@@ -33,9 +41,7 @@ public class QuanLyNhanVien extends JPanel {
 	private JLabel lblGioiTinh;
 	private JTextField txtSoDienThoai;
 	private JLabel lblSoDienThoai;
-	private JTextField txtGioiTinh;
 	private JLabel lblChucVu;
-	private JTextField txtChucVu;
 	private JLabel lblTaiKhoan;
 	private JPanel pnlLeft1;
 	private JPanel pnlLeft2;
@@ -64,6 +70,8 @@ public class QuanLyNhanVien extends JPanel {
 	private JTable table;
 	private JScrollPane scroll;
 	private JComboBox<String> cbGioiTinh;
+	private JComboBox<ChucVu> cbChucVu;
+	private NhanVienDAO nhanVienDAO;
 
 	QuanLyNhanVien() {
 		setLayout(new BorderLayout());
@@ -97,7 +105,8 @@ public class QuanLyNhanVien extends JPanel {
 		pnlLeft.add(box5=new Box(BoxLayout.X_AXIS));
 		pnlLeft.add(Box.createVerticalStrut(10));
 		box5.add(lblChucVu=new JLabel("Chức vụ"));
-		box5.add(txtChucVu=new JTextField());
+		box5.add(cbChucVu=new JComboBox<>(ChucVu.values()));
+		cbChucVu.setPreferredSize(new Dimension(10, 50));
 		pnlLeft.add(box6=new Box(BoxLayout.X_AXIS));
 		pnlLeft.add(Box.createVerticalStrut(10));
 		box6.add(lblTaiKhoan=new JLabel("TÀI KHOẢN"));
@@ -147,7 +156,44 @@ public class QuanLyNhanVien extends JPanel {
 		scroll=new JScrollPane(table);
 		pnlRight.add(scroll);
 		
+		btnThem.addActionListener(this);
+		btnXoa.addActionListener(this);
+		btnXoaTrang.addActionListener(this);
+		btnCapNhat.addActionListener(this);
+		
+		
 		add(split=new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, pnlLeft, pnlRight), BorderLayout.CENTER);
 		setVisible(true);
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		if(e.getSource()==btnThem) {
+			String maNhanVien=txtMa.getText();
+			String tenNhanVien=txtTen.getText();
+			String gioiTinh=(String) cbGioiTinh.getSelectedItem();
+			String soDienThoai=txtSoDienThoai.getText();
+			ChucVu chucVu=(ChucVu) cbChucVu.getSelectedItem();
+			String maTaiKhoan=txtMaTaiKhoan.getText();
+			String tenDangNhap=txtTenDangNhap.getText();
+			String matKhau=new String(txtMatKhau.getPassword());
+			
+			if(maNhanVien.isEmpty()||tenNhanVien.isEmpty()||soDienThoai.isEmpty()
+					||maTaiKhoan.isEmpty()||tenDangNhap.isEmpty()||matKhau.isEmpty()) {
+				JOptionPane.showMessageDialog(this, "Vui lòng nhập đầy đủ tất cả trường!");
+				return;
+			}
+			TaiKhoan taiKhoan=new TaiKhoan(maTaiKhoan, tenDangNhap, matKhau);
+			NhanVien nhanVien=new NhanVien(maNhanVien, tenNhanVien, gioiTinh, soDienThoai, chucVu, taiKhoan);
+			
+			nhanVienDAO=new NhanVienDAO();
+			if(nhanVienDAO.themNhanVien(nhanVien)) {
+				JOptionPane.showMessageDialog(this, "Thêm nhân viên thành công!");
+			}else {
+				JOptionPane.showMessageDialog(this, "Thêm nhân viên thất bại!");
+				return;
+			}
+		}
+		
 	}
 }
