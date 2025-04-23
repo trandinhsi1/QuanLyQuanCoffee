@@ -4,6 +4,9 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.util.List;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
@@ -20,11 +23,12 @@ import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 
 import dao.NhanVienDAO;
+import dao.TaiKhoanDAO;
 import entity.ChucVu;
 import entity.NhanVien;
 import entity.TaiKhoan;
 
-public class QuanLyNhanVien extends JPanel implements ActionListener {
+public class QuanLyNhanVien extends JPanel implements ActionListener,MouseListener {
 	private JLabel lblQLNV;
 	private JSplitPane split;
 	private JPanel pnlLeft;
@@ -71,7 +75,8 @@ public class QuanLyNhanVien extends JPanel implements ActionListener {
 	private JScrollPane scroll;
 	private JComboBox<String> cbGioiTinh;
 	private JComboBox<ChucVu> cbChucVu;
-	private NhanVienDAO nhanVienDAO;
+	private  NhanVienDAO nhanVienDAO;
+	private TaiKhoanDAO taiKhoanDAO;
 
 	QuanLyNhanVien() {
 		setLayout(new BorderLayout());
@@ -154,7 +159,10 @@ public class QuanLyNhanVien extends JPanel implements ActionListener {
 		model=new DefaultTableModel(column, 0);
 		table=new JTable(model);
 		scroll=new JScrollPane(table);
+		loadNhanVien();
+		table.addMouseListener(this);
 		pnlRight.add(scroll);
+		
 		
 		btnThem.addActionListener(this);
 		btnXoa.addActionListener(this);
@@ -183,17 +191,150 @@ public class QuanLyNhanVien extends JPanel implements ActionListener {
 				JOptionPane.showMessageDialog(this, "Vui lòng nhập đầy đủ tất cả trường!");
 				return;
 			}
+			if(!maNhanVien.trim().matches("(NV|PV)\\d{3}")) {
+				JOptionPane.showMessageDialog(this, "Mã nhân viên không hợp lệ!");
+				return;
+			}
+			if(!soDienThoai.trim().matches("\\d{10}")) {
+				JOptionPane.showMessageDialog(this, "Số điện thoại không hợp lệ!");
+				return;
+			}
+			
 			TaiKhoan taiKhoan=new TaiKhoan(maTaiKhoan, tenDangNhap, matKhau);
 			NhanVien nhanVien=new NhanVien(maNhanVien, tenNhanVien, gioiTinh, soDienThoai, chucVu, taiKhoan);
 			
 			nhanVienDAO=new NhanVienDAO();
+			
 			if(nhanVienDAO.themNhanVien(nhanVien)) {
 				JOptionPane.showMessageDialog(this, "Thêm nhân viên thành công!");
+				loadNhanVien();
 			}else {
 				JOptionPane.showMessageDialog(this, "Thêm nhân viên thất bại!");
 				return;
 			}
 		}
+		
+		//Xóa nhân viên
+	if(e.getSource()==btnXoa) {
+			int row=table.getSelectedRow();
+			if(row<0) {
+				JOptionPane.showMessageDialog(this, "Vui lòng chọn nhân viên cần xóa!");
+				return;
+			}
+			String maNhanVien=(String) table.getValueAt(row, 0);
+			String maTaiKhoan=(String) table.getValueAt(row, 5);
+			nhanVienDAO=new NhanVienDAO();
+			taiKhoanDAO=new TaiKhoanDAO();
+			if(nhanVienDAO.xoaNhanVien(maNhanVien)&&taiKhoanDAO.xoaTaiKhoan(maTaiKhoan)) {
+				JOptionPane.showMessageDialog(this, "Xóa nhân viên thành công!");
+				loadNhanVien();
+			}else {
+				JOptionPane.showMessageDialog(this, "Xóa nhân viên thất bại!");
+				return;
+			}
+		}
+		
+		if(e.getSource()==btnXoaTrang) {
+			txtMa.setText("");
+			txtTen.setText("");
+			txtSoDienThoai.setText("");
+			txtMaTaiKhoan.setText("");
+			txtTenDangNhap.setText("");
+			txtMatKhau.setText("");
+		}
+		
+		if(e.getSource()==btnCapNhat) {
+			int index=table.getSelectedRow();
+			if(index<0) {
+				JOptionPane.showMessageDialog(this, "Vui lòng chọn nhân viên cần cập nhật!");
+				return;
+			}
+			String maNhanVien=txtMa.getText();
+			String tenNhanVien=txtTen.getText();
+			String gioiTinh=(String) cbGioiTinh.getSelectedItem();
+			String soDienThoai=txtSoDienThoai.getText();
+			ChucVu chucVu=(ChucVu) cbChucVu.getSelectedItem();
+			String maTaiKhoan=txtMaTaiKhoan.getText();
+			String tenDangNhap=txtTenDangNhap.getText();
+			String matKhau=new String(txtMatKhau.getPassword());
+			
+			if(maNhanVien.isEmpty()||tenNhanVien.isEmpty()||soDienThoai.isEmpty()
+					||maTaiKhoan.isEmpty()||tenDangNhap.isEmpty()||matKhau.isEmpty()) {
+				JOptionPane.showMessageDialog(this, "Vui lòng nhập đầy đủ tất cả trường!");
+				return;
+			}
+			if(!maNhanVien.trim().matches("(NV|PV)\\d{3}")) {
+				JOptionPane.showMessageDialog(this, "Mã nhân viên không hợp lệ!");
+				return;
+			}
+			if(!soDienThoai.trim().matches("\\d{10}")) {
+				JOptionPane.showMessageDialog(this, "Số điện thoại không hợp lệ!");
+				return;
+			}
+			TaiKhoan taiKhoan=new TaiKhoan(maTaiKhoan, tenDangNhap, matKhau);
+			NhanVien nhanVien=new NhanVien(maNhanVien, tenNhanVien, gioiTinh, soDienThoai, chucVu, taiKhoan);
+			nhanVienDAO=new NhanVienDAO();
+			taiKhoanDAO=new TaiKhoanDAO();
+			if(nhanVienDAO.capNhatNhanVien(nhanVien)&&taiKhoanDAO.capNhatTaiKhoan(taiKhoan)) {
+				JOptionPane.showMessageDialog(this, "Cập nhật nhân viên thành công!");
+				loadNhanVien();
+				}else {
+					JOptionPane.showMessageDialog(this, "Cập nhật nhân viên thất bại!");
+					return;
+				}
+		}
+}
+	public void loadNhanVien() {
+		model.setRowCount(0);
+		List<NhanVien> list=nhanVienDAO.getAllNhanVien();
+		for(NhanVien nhanVien: list) {
+			model.addRow(new Object[] {nhanVien.getMaNhanVien(), nhanVien.getTenNhanVien(), nhanVien.getGioiTinh(), nhanVien.getSoDienThoai(), nhanVien.getChucVu().getChucVu(),
+					nhanVien.getTaiKhoan().getMaTaiKhoan(), nhanVien.getTaiKhoan().getTenDangNhap(), nhanVien.getTaiKhoan().getMatKhau()});
+		}
+	}
+
+	@Override
+	public void mouseClicked(MouseEvent e) {
+		int row=table.getSelectedRow();
+		if(row<0) {
+			return;
+		}
+		txtMa.setText((String) table.getValueAt(row, 0));
+		txtTen.setText((String) table.getValueAt(row, 1));
+		cbGioiTinh.setSelectedItem((String) table.getValueAt(row, 2));
+		txtSoDienThoai.setText((String) table.getValueAt(row, 3));
+		cbChucVu.setSelectedItem((String) table.getValueAt(row, 4));
+		txtMaTaiKhoan.setText((String) table.getValueAt(row, 5));
+		txtTenDangNhap.setText((String) table.getValueAt(row, 6));
+		txtMatKhau.setText((String) table.getValueAt(row, 7));
+		txtMa.setEditable(false);
+		txtMa.setEnabled(false);
+		txtMaTaiKhoan.setEditable(false);
+		txtMaTaiKhoan.setEnabled(false);
+		
+	}
+
+	@Override
+	public void mousePressed(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseReleased(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseEntered(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseExited(MouseEvent e) {
+		// TODO Auto-generated method stub
 		
 	}
 }

@@ -63,6 +63,63 @@ public class NhanVienDAO {
 	        return false;
 	    }
 	}
-
-
+	// Phương thức xóa nhân viên
+	public boolean xoaNhanVien(String maNhanVien) {
+	    String sql = "DELETE FROM NhanVien WHERE maNhanVien = ?";
+	    try (Connection conn = DatabaseConnection.getConnection();
+	         PreparedStatement ps = conn.prepareStatement(sql)) {
+	        ps.setString(1, maNhanVien);
+	        int rowsAffected = ps.executeUpdate();
+	        return rowsAffected > 0;
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	        return false;
+	    }
+	}
+	// Phương thức lấy danh sách nhân viên
+	public static List<NhanVien> getAllNhanVien() {
+	    List<NhanVien> list = new ArrayList<>();
+	    String sql = "SELECT nv.maNhanVien, nv.tenNhanVien, nv.gioiTinh, nv.soDienThoai, cv.chucVu, tk.maTaiKhoan, tk.tenDangNhap, tk.matKhau " +
+	                 "FROM NhanVien nv " +
+	                 "JOIN ChucVu cv ON nv.chucVuId = cv.id " +
+	                 "JOIN TaiKhoan tk ON nv.maTaiKhoan = tk.maTaiKhoan";
+	    try (Connection conn = DatabaseConnection.getConnection();
+	         PreparedStatement ps = conn.prepareStatement(sql);
+	         ResultSet rs = ps.executeQuery()) {
+	        while (rs.next()) {
+	            String maNhanVien = rs.getString("maNhanVien");
+	            String tenNhanVien = rs.getString("tenNhanVien");
+	            String gioiTinh = rs.getString("gioiTinh");
+	            String soDienThoai = rs.getString("soDienThoai");
+	            String tenChucVu = rs.getString("chucVu");
+	            String maTaiKhoan = rs.getString("maTaiKhoan");
+	            String tenDangNhap = rs.getString("tenDangNhap");
+	            String matKhau = rs.getString("matKhau");
+	            ChucVu chucVu= ChucVu.fromName(tenChucVu);	
+	            TaiKhoan taiKhoan = new TaiKhoan(maTaiKhoan, tenDangNhap, matKhau);
+	            NhanVien nhanVien = new NhanVien(maNhanVien, tenNhanVien, gioiTinh, soDienThoai, chucVu, taiKhoan);
+	            list.add(nhanVien);
+	        }
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    }
+	    return list;
+	}
+	// Phuong thức cập nhât nhân viên
+	public boolean capNhatNhanVien(NhanVien nhanVien) {
+	    String sql = "UPDATE NhanVien SET tenNhanVien = ?, gioiTinh = ?, soDienThoai = ?, chucVuId = ? WHERE maNhanVien = ?";
+	    try (Connection conn = DatabaseConnection.getConnection();
+	         PreparedStatement ps = conn.prepareStatement(sql)) {
+	        ps.setString(1, nhanVien.getTenNhanVien());
+	        ps.setString(2, nhanVien.getGioiTinh());
+	        ps.setString(3, nhanVien.getSoDienThoai());
+	        ps.setInt(4, nhanVien.getChucVu().getId());
+	        ps.setString(5, nhanVien.getMaNhanVien());
+	        int rowsAffected = ps.executeUpdate();
+	        return rowsAffected > 0;
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	        return false;
+	    }
+	}
 }
