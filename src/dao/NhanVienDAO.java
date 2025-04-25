@@ -8,7 +8,8 @@ import entity.ChucVu;
 import entity.TaiKhoan;
 
 public class NhanVienDAO {
-
+	
+	
     // Phương thức thêm nhân viên
 	public boolean themNhanVien(NhanVien nhanVien) {
 	    String sqlTaiKhoan = "INSERT INTO TaiKhoan (maTaiKhoan, tenDangNhap, matKhau) VALUES (?, ?, ?)";
@@ -122,4 +123,5 @@ public class NhanVienDAO {
 	        return false;
 	    }
 	}
+	
 }

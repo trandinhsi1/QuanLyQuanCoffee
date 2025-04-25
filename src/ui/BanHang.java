@@ -36,7 +36,6 @@ import javax.swing.table.DefaultTableModel;
 
 import entity.SanPham;
 
-
 public class BanHang extends JPanel implements ActionListener, MouseListener{
 	JTextField txtTim = new JTextField();
 	JButton btnTim = new JButton("Tìm");
