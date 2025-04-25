@@ -123,5 +123,20 @@ public class NhanVienDAO {
 	        return false;
 	    }
 	}
+	//Đếm số lượng nhân viên
+	public int demNhanVien() {
+		int count = 0;
+		String sql = "SELECT COUNT(*) AS count FROM NhanVien";
+		try (Connection conn = DatabaseConnection.getConnection();
+			 PreparedStatement ps = conn.prepareStatement(sql);
+			 ResultSet rs = ps.executeQuery()) {
+			if (rs.next()) {
+				count = rs.getInt("count");
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return count;
+	}
 	
 }
