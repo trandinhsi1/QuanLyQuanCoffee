@@ -54,8 +54,8 @@ public class QuanLySanPham extends JPanel implements ActionListener,MouseListene
 	JButton btnTim = new JButton("Tìm");
 	JComboBox<String> cboLocTheoLoaiSanPham = new JComboBox<>(items);
 	String[] column = {"Mã sản phẩm", "Tên sản phẩm", "Giá bán", "Loại sản phẩm", "Ảnh sản phẩm"};
-	DefaultTableModel dfModel = new DefaultTableModel(null, column);
-	JTable table = new JTable(dfModel);
+	DefaultTableModel model = new DefaultTableModel(null, column);
+	JTable table = new JTable(model);
 	SanPhamDAO spdao = new SanPhamDAO();
 	private ImageIcon icon;
 	private Image scaled;
@@ -97,12 +97,7 @@ public class QuanLySanPham extends JPanel implements ActionListener,MouseListene
 		btnCapNhat.setPreferredSize(new Dimension(100, 40));
 		btnXoa.setPreferredSize(new Dimension(100, 40));
 		cboLoaiSanPham.setPreferredSize(new Dimension(100,50));
-//		
-//		txtMaSanPham.setColumns(20);
-//        txtTenSanPham.setColumns(20);
-//        txtGiaBan.setColumns(20);
-//        txtAnhSanPham.setColumns(20);
-//		
+	
 		btnChon.setPreferredSize(new Dimension(100, 0));
 		
 		p1.add(lblAnhSanPham);
@@ -174,6 +169,7 @@ public class QuanLySanPham extends JPanel implements ActionListener,MouseListene
 		btnCapNhat.addActionListener(this);
 		btnThem.addActionListener(this);
 		btnTim.addActionListener(this);
+		cboLocTheoLoaiSanPham.addActionListener(this);
 		table.addMouseListener(this);
 	}
 
@@ -197,6 +193,22 @@ public class QuanLySanPham extends JPanel implements ActionListener,MouseListene
 		}
 		if(e.getSource() == btnTim) {
 			Tim();
+		}
+		if(e.getSource() == cboLocTheoLoaiSanPham) {
+			locTheoSP();
+		}
+		
+	}
+
+
+	private void locTheoSP() {
+		String chonloaisp = cboLocTheoLoaiSanPham.getSelectedItem().toString();
+		List<SanPham> dsLoc = spdao.getSanPhamTheoLoai(chonloaisp);
+		
+		model.setRowCount(0);
+		
+		for(SanPham sp : dsLoc) {
+			model.addRow(new Object[] {sp.getMaSanPham(),sp.getTenSanPham(),sp.getGiaBan(),sp.getLoaiSanPham(),sp.getAnhSanPham()});
 		}
 		
 	}
@@ -366,11 +378,11 @@ public class QuanLySanPham extends JPanel implements ActionListener,MouseListene
 
 
 	private void loadDanhSachSanPham() {
-		dfModel.setRowCount(0); 
+		model.setRowCount(0); 
 		List<SanPham> dssp = new ArrayList<SanPham>();
 		dssp = spdao.getAllSanPham();
 		for(SanPham sp : dssp) {
-			dfModel.addRow(new Object[] {sp.getMaSanPham(),sp.getTenSanPham(),sp.getGiaBan(),sp.getLoaiSanPham(),sp.getAnhSanPham()});
+			model.addRow(new Object[] {sp.getMaSanPham(),sp.getTenSanPham(),sp.getGiaBan(),sp.getLoaiSanPham(),sp.getAnhSanPham()});
 		}
 		
 	}
