@@ -75,4 +75,37 @@ public class TaiKhoanDAO {
 		}
 		return 0;
 	}
+	
+	// Phương thức tìm tài khoản theo tên đăng nhập (dùng cho chức năng Quên mật khẩu)
+    public TaiKhoan timTaiKhoanTheoTenDangNhap(String tenDangNhap) {
+        String sql = "SELECT * FROM TaiKhoan WHERE tenDangNhap = ?";
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setString(1, tenDangNhap);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                String maTaiKhoan = rs.getString("maTaiKhoan");
+                String tenDN = rs.getString("tenDangNhap");
+                String matKhau = rs.getString("matKhau");
+                return new TaiKhoan(maTaiKhoan, tenDN, matKhau);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    // Phương thức cập nhật mật khẩu theo tên đăng nhập (dùng cho chức năng Quên mật khẩu)
+    public boolean capNhatMatKhauTheoTenDangNhap(String tenDangNhap, String matKhauMoi) {
+        String sql = "UPDATE TaiKhoan SET matKhau = ? WHERE tenDangNhap = ?";
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setString(1, matKhauMoi);
+            ps.setString(2, tenDangNhap);
+            return ps.executeUpdate() > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
 }

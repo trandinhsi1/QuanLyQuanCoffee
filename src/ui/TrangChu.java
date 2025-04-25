@@ -26,11 +26,6 @@ public class TrangChu extends JPanel {
         lblbanner = new JLabel(new ImageIcon(img));
         lblbanner.setLayout(new BorderLayout());
 
-     
-        JLabel lblnoidung = new JLabel("\"Cà phê – điểm tựa của những giấc mơ\"", JLabel.CENTER);
-        lblnoidung.setFont(new Font("Italic", Font.BOLD, 26)); 
-
-       
         pThongtin = new JPanel(new GridLayout(3, 1));
         pThongtin.setOpaque(false); 
         pThongtin.add(createInfoLabel("⏰ Giờ mở cửa: 7AM - 10PM"));
