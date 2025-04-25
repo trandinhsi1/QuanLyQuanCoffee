@@ -48,22 +48,22 @@ public class GiaoDien extends JFrame implements ActionListener {
         pLogo.add(lblLogo);
         pLogo.setLayout(new FlowLayout());
         
-        btnTrangChu = new JButton("Trang chủ");
+        btnTrangChu = new JButton("Trang chủ",new ImageIcon(getClass().getResource("/img/home.png")));
         btnTrangChu.setBackground(COFFEE);
         btnTrangChu.setForeground(Color.WHITE);
-        btnBanHang = new JButton("Bán hàng");
+        btnBanHang = new JButton("Bán hàng",new ImageIcon(getClass().getResource("/img/banhang.png")));
         btnBanHang.setBackground(COFFEE);
         btnBanHang.setForeground(Color.WHITE);
-        btnHoaDon = new JButton("Hóa đơn");
+        btnHoaDon = new JButton("Hóa đơn",new ImageIcon(getClass().getResource("/img/hoadon.png")));
         btnHoaDon.setBackground(COFFEE);
         btnHoaDon.setForeground(Color.WHITE);
-        btnSanPham = new JButton("Sản phẩm");
+        btnSanPham = new JButton("Sản phẩm",new ImageIcon(getClass().getResource("/img/sanpham.png")));
         btnSanPham.setBackground(COFFEE);
         btnSanPham.setForeground(Color.WHITE);
-        btnThongKe = new JButton("Thống kê");
+        btnThongKe = new JButton("Thống kê",new ImageIcon(getClass().getResource("/img/thongke.png")));
         btnThongKe.setBackground(COFFEE);
         btnThongKe.setForeground(Color.WHITE);
-        btnNhanVien = new JButton("Nhân viên");
+        btnNhanVien = new JButton("Nhân viên",new ImageIcon(getClass().getResource("/img/nhanvien.png")));
         btnNhanVien.setBackground(COFFEE);
         btnNhanVien.setForeground(Color.WHITE);
         
