@@ -82,7 +82,7 @@ public class QuanLySanPham extends JPanel implements ActionListener,MouseListene
 		p6.setLayout(new BoxLayout(p6, BoxLayout.X_AXIS));
 		
 		
-		 icon = new ImageIcon("img/cafeden.jpg");
+		 icon = new ImageIcon(getClass().getResource("/img/logo.png"));
          scaled = icon.getImage().getScaledInstance(150, 150, Image.SCALE_SMOOTH);
          resizedIcon = new ImageIcon(scaled);
          

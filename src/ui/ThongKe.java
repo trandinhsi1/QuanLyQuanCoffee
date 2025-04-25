@@ -11,6 +11,7 @@ import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.data.category.DefaultCategoryDataset;
 
 import dao.NhanVienDAO;
+import dao.SanPhamDAO;
 import dao.TaiKhoanDAO;
 
 import java.awt.*;
@@ -43,9 +44,11 @@ public class ThongKe extends JPanel implements ActionListener {
 	private JComboBox cbDoanhThu;
 	private NhanVienDAO nhanVienDAO = new NhanVienDAO();
 	private TaiKhoanDAO taiKhoanDAO = new TaiKhoanDAO();
+	private SanPhamDAO sanPhamDAO = new SanPhamDAO();
 	private DefaultCategoryDataset dataset;
 	private JFreeChart chart;
 	private ChartPanel chartPanel;
+	private static final Color COFFEE = new Color(111, 78, 55);
 	public ThongKe() {
 		setLayout(new BorderLayout());
 		
@@ -121,6 +124,7 @@ public class ThongKe extends JPanel implements ActionListener {
 		dataset = createDataset("Doanh thu theo tuần");
 		chart=createChart(dataset,"Doanh thu theo tuần");
 		chartPanel = new ChartPanel(chart);
+		customizeChartColors(chart);
 		pnlBieuDo.add(chartPanel, BorderLayout.CENTER);
 		
 		setVisible(true);
@@ -130,6 +134,7 @@ public class ThongKe extends JPanel implements ActionListener {
 	 private void updateLabels() {
 		lblNhanVien.setText(String.valueOf(nhanVienDAO.demNhanVien()) );
 		lblTaiKhoan.setText(String.valueOf(taiKhoanDAO.demTaiKhoan()) );
+		lblSanPham.setText(String.valueOf(sanPhamDAO.demSanPham()) );
 		
 	}
 	 
@@ -190,6 +195,28 @@ public class ThongKe extends JPanel implements ActionListener {
 	            );
 	        }
 	    }
+	private void customizeChartColors(JFreeChart chart) {
+	    // Áp dụng cho biểu đồ cột (BarChart)
+	    var plot = chart.getCategoryPlot();
+
+	    // Đổi màu của từng cột (series)
+	    var renderer = plot.getRenderer();
+	    renderer.setSeriesPaint(0, COFFEE); 
+	    // Đổi màu nền biểu đồ
+	    plot.setBackgroundPaint(Color.WHITE); // nền tối
+	    plot.setDomainGridlinePaint(Color.LIGHT_GRAY);  // đường lưới ngang
+	    plot.setRangeGridlinePaint(Color.LIGHT_GRAY);   // đường lưới dọc
+
+	    // Đổi màu đường viền biểu đồ
+	    plot.setOutlinePaint(Color.GRAY);
+
+	    // Đổi màu tiêu đề (nếu muốn)
+	    chart.getTitle().setPaint(COFFEE); // màu chữ tiêu đề
+	    
+	    // Đổi màu chữ trong legend (chú thích)
+	    chart.getLegend().setItemPaint(COFFEE); // màu chữ trong legend
+	}
+
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if(e.getSource() == cbDoanhThu) {
@@ -201,18 +228,21 @@ public class ThongKe extends JPanel implements ActionListener {
 				 dataset = createDataset(selectedItem);
 				 chart = createChart(dataset, selectedItem);
 				 chartPanel.setChart(chart);
+				 customizeChartColors(chart);
 				 break;
 			 case "Doanh thu theo tháng":
 				 // Cập nhật biểu đồ doanh thu theo tháng
 				 dataset = createDataset(selectedItem);
 				 chart = createChart(dataset, selectedItem);
 				 chartPanel.setChart(chart);
+				 customizeChartColors(chart);
 				 break;
 			 case "Doanh thu theo năm":
 				 // Cập nhật biểu đồ doanh thu theo năm
 				 dataset = createDataset(selectedItem);
 				 chart = createChart(dataset, selectedItem);
 				 chartPanel.setChart(chart); 
+				 customizeChartColors(chart);
 				 break;
 			 default:
 				 break;
