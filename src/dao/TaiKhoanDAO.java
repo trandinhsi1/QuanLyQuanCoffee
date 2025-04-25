@@ -2,6 +2,7 @@ package dao;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import entity.TaiKhoan;
@@ -59,5 +60,19 @@ public class TaiKhoanDAO {
 			e.printStackTrace();
 			return false;
 		}
+	}
+	//Phương thức đếm số tài khoản
+	public int demTaiKhoan() {
+		String sql = "SELECT COUNT(*) FROM TaiKhoan";
+		try (Connection conn = DatabaseConnection.getConnection();
+			 PreparedStatement ps = conn.prepareStatement(sql)) {
+			 ResultSet rs = ps.executeQuery();
+			 if (rs.next()) {
+				 return rs.getInt(1);
+			 }
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return 0;
 	}
 }
