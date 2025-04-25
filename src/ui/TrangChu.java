@@ -20,22 +20,11 @@ public class TrangChu extends JPanel {
 	public TrangChu() {
         setLayout(new BorderLayout());
 
-    
+        
         ImageIcon banner = new ImageIcon("img/banner2.png"); 
         Image img = banner.getImage().getScaledInstance(1000, 700, Image.SCALE_SMOOTH);
         lblbanner = new JLabel(new ImageIcon(img));
         lblbanner.setLayout(new BorderLayout());
-
-     
-        lblTieuDe = new JLabel("☕ Welcome to CoffeeShop ☕", JLabel.CENTER);
-        lblTieuDe.setFont(new Font("Serif", Font.BOLD, 48)); 
-        lblTieuDe.setForeground(Color.WHITE);
-        lblTieuDe.setBorder(BorderFactory.createEmptyBorder(30, 0, 10, 0));
-
-       
-        lblTieuDe.setOpaque(true);
-        lblTieuDe.setBackground(new Color(102, 51, 0, 180));
-
 
      
         JLabel lblnoidung = new JLabel("\"Cà phê – điểm tựa của những giấc mơ\"", JLabel.CENTER);
@@ -51,8 +40,6 @@ public class TrangChu extends JPanel {
        
         pTrangChu = new JPanel(new BorderLayout());
         pTrangChu.setOpaque(false);
-//        pTrangChu.add(lblTieuDe, BorderLayout.NORTH);
-//        pTrangChu.add(lblnoidung, BorderLayout.CENTER);
         pTrangChu.add(pThongtin, BorderLayout.SOUTH);
 
         lblbanner.add(pTrangChu, BorderLayout.CENTER);
