@@ -82,7 +82,7 @@ public class QuanLySanPham extends JPanel implements ActionListener,MouseListene
 		p6.setLayout(new BoxLayout(p6, BoxLayout.X_AXIS));
 		
 		
-		 icon = new ImageIcon("img/cafeden.jpg");
+		 icon = new ImageIcon(getClass().getResource("/img/logo.png"));
          scaled = icon.getImage().getScaledInstance(150, 150, Image.SCALE_SMOOTH);
          resizedIcon = new ImageIcon(scaled);
          
@@ -203,8 +203,51 @@ public class QuanLySanPham extends JPanel implements ActionListener,MouseListene
 
 
 	private void Tim() {
-		// TODO Auto-generated method stub
-		
+	    String maSPTim = txtTim.getText().trim(); // Lấy mã sản phẩm từ ô tìm kiếm
+	    if (maSPTim.isEmpty()) {
+	        JOptionPane.showMessageDialog(this, "Vui lòng nhập mã sản phẩm để tìm!", "Lỗi", JOptionPane.ERROR_MESSAGE);
+	        return;
+	    }
+
+	    // Sử dụng DAO để tìm sản phẩm
+	    SanPham sp = spdao.timSanPhamTheoMa(maSPTim);
+	    if (sp != null) {
+	        // Tìm thấy sản phẩm, giờ tìm dòng tương ứng trong bảng
+	        for (int i = 0; i < table.getRowCount(); i++) {
+	            String maSPTrongBang = table.getValueAt(i, 0).toString();
+	            if (maSPTrongBang.equalsIgnoreCase(maSPTim)) {
+	                // Bôi đen dòng
+	                table.setRowSelectionInterval(i, i);
+	                // Cuộn bảng đến dòng được chọn
+	                table.scrollRectToVisible(table.getCellRect(i, 0, true));
+	                // Tự động điền thông tin sản phẩm vào các ô nhập liệu (tương tự mouseClicked)
+	                txtMaSanPham.setText(sp.getMaSanPham());
+	                txtTenSanPham.setText(sp.getTenSanPham());
+	                txtGiaBan.setText(String.valueOf(sp.getGiaBan()));
+	                cboLoaiSanPham.setSelectedItem(sp.getLoaiSanPham());
+	                txtAnhSanPham.setText(sp.getAnhSanPham());
+
+	                // Hiển thị ảnh sản phẩm
+	                String pathAnh = sp.getAnhSanPham();
+	                if (pathAnh != null && !pathAnh.isEmpty()) {
+	                    File fileAnh = new File(pathAnh);
+	                    if (fileAnh.exists()) {
+	                        ImageIcon imageIcon = new ImageIcon(pathAnh);
+	                        Image scaledImage = imageIcon.getImage().getScaledInstance(150, 150, Image.SCALE_SMOOTH);
+	                        lblAnhSanPham.setIcon(new ImageIcon(scaledImage));
+	                    } else {
+	                        lblAnhSanPham.setIcon(null);
+	                        JOptionPane.showMessageDialog(this, "Không tìm thấy ảnh: " + pathAnh, "Lỗi", JOptionPane.WARNING_MESSAGE);
+	                    }
+	                } else {
+	                    lblAnhSanPham.setIcon(null);
+	                }
+	                return; // Thoát sau khi tìm thấy
+	            }
+	        }
+	    } else {
+	        JOptionPane.showMessageDialog(this, "Không tìm thấy sản phẩm với mã: " + maSPTim, "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+	    }
 	}
 
 
