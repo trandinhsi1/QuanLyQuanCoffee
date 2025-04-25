@@ -9,6 +9,7 @@ import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.Box;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -37,12 +38,14 @@ public class GiaoDien extends JFrame implements ActionListener {
         JPanel pNav = new JPanel();
         pNav.setLayout(new GridLayout(6, 1));
         JPanel pLogo = new JPanel();
+        pLogo.setLayout(new FlowLayout());
         
         // Tạo logo bằng getClass().getResource()
         ImageIcon logo = new ImageIcon(getClass().getResource("/img/logo.png"));
         Image resizedImage = logo.getImage().getScaledInstance(200, 200, Image.SCALE_SMOOTH);
         ImageIcon resizedLogo = new ImageIcon(resizedImage);
         JLabel lblLogo = new JLabel(resizedLogo);
+        lblLogo.setBorder(null);
         
         // Thêm logo vào pLogo
         pLogo.add(lblLogo);
@@ -69,9 +72,13 @@ public class GiaoDien extends JFrame implements ActionListener {
         
         // Thêm các nút vào pNav
         pNav.add(btnTrangChu);
+        
         pNav.add(btnBanHang);
+       
         pNav.add(btnHoaDon);
+        
         pNav.add(btnSanPham);
+        
         pNav.add(btnThongKe);
         pNav.add(btnNhanVien);
         
