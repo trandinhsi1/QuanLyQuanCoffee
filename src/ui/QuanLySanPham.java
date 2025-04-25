@@ -276,7 +276,7 @@ public class QuanLySanPham extends JPanel implements ActionListener,MouseListene
 		txtAnhSanPham.setText("");
 		cboLoaiSanPham.setSelectedIndex(0);
 		cboLocTheoLoaiSanPham.setSelectedIndex(0);
-		ImageIcon logo = new ImageIcon(getClass().getResource("/img/logo.png"));
+		ImageIcon logo = new ImageIcon(getClass().getResource("/img/spmd.png"));
         Image resizedImage = logo.getImage().getScaledInstance(150, 150, Image.SCALE_SMOOTH);
         ImageIcon resizedLogo = new ImageIcon(resizedImage);
 		lblAnhSanPham.setIcon(resizedLogo );
