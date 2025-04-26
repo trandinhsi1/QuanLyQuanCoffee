@@ -37,7 +37,6 @@ public class QuanLyHoaDon extends JPanel implements ActionListener, MouseListene
 	JButton btnTim = new JButton("Tìm");
 	JButton btnSua = new JButton("Sửa");
 	JButton btnXoa = new JButton("Xóa");
-	JButton btnReset = new JButton("Reset bảng");
 	//JButton 
 	JLabel lblMaHoaDon = new JLabel("Mã hóa đơn:");
 	JLabel lblNguoiLapHD = new JLabel("Người lập HD: ");
@@ -52,7 +51,6 @@ public class QuanLyHoaDon extends JPanel implements ActionListener, MouseListene
 	JTextField txtTongTien = new JTextField();
 	HoaDonDAO hd_dao = new HoaDonDAO();
 	ArrayList<HoaDon> dshd;
-	
 	
 	public QuanLyHoaDon() {
 		
@@ -73,7 +71,6 @@ public class QuanLyHoaDon extends JPanel implements ActionListener, MouseListene
 		p2.setLayout(new BoxLayout(p2, BoxLayout.X_AXIS));
 		p3.setLayout(new BoxLayout(p3, BoxLayout.X_AXIS));
 		p4.setLayout(new BoxLayout(p4, BoxLayout.X_AXIS));
-		//p5.setLayout(new BoxLayout(p5, BoxLayout.X_AXIS));
 		JLabel lblCTHD = new JLabel("CHI TIẾT HÓA ĐƠN");
 		lblCTHD.setFont(new Font("Times new Roman", Font.BOLD, 20));
 		p6.setLayout(new BorderLayout());
@@ -120,7 +117,6 @@ public class QuanLyHoaDon extends JPanel implements ActionListener, MouseListene
 		pRight.add(scrollPane, BorderLayout.CENTER);
 		
 		JPanel pSouth = new JPanel(new FlowLayout(FlowLayout.CENTER));
-		pSouth.add(btnReset);
 		pSouth.add(btnSua);
 		pSouth.add(btnXoa);
 		pSouth.add(lblTim);
@@ -131,7 +127,6 @@ public class QuanLyHoaDon extends JPanel implements ActionListener, MouseListene
 		btnTim.addActionListener(this);
 		btnSua.addActionListener(this);
 		btnXoa.addActionListener(this);
-		btnReset.addActionListener(this);
 		
 		JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, pLeft, pRight);
 		this.add(splitPane);
@@ -225,9 +220,6 @@ public class QuanLyHoaDon extends JPanel implements ActionListener, MouseListene
 					}
 				}
 			}
-		}
-		if(e.getSource() == btnReset) {
-			doDuLieuVaoBang();
 		}
 	}
 

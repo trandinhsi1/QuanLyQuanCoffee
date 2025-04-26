@@ -85,9 +85,9 @@ public class GiaoDien extends JFrame implements ActionListener {
         
         // Tạo các "thẻ" (card)
         TrangChu card1 = new TrangChu();
-        BanHang card2 = new BanHang();
         QuanLySanPham card3 = new QuanLySanPham();
         QuanLyHoaDon card4 = new QuanLyHoaDon();
+        BanHang card2 = new BanHang(card4);
         ThongKe card5 = new ThongKe();
         QuanLyNhanVien card6 = new QuanLyNhanVien();
         
