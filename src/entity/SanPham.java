@@ -18,7 +18,9 @@ public class SanPham {
 		this.anhSanPham = anhSanPham;
 	}
 
-	
+	public SanPham(String maSanPham) {
+		this.maSanPham = maSanPham;
+	}
 
 	public String getMaSanPham() {
 		return maSanPham;

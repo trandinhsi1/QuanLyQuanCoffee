@@ -5,13 +5,13 @@ import java.util.List;
 import java.util.Objects;
 
 public class HoaDon {
-	private String maHD;
+	private int maHD;
 	private LocalDate ngayLapHD;
 	private double tongTien;
 	private NhanVien nhanVien;
 	private List<ChiTietHoaDon> dsCTHD;
 	
-	public HoaDon(String maHD, LocalDate ngayLapHD, double tongTien, NhanVien nhanVien, List<ChiTietHoaDon> dsCTHD) {
+	public HoaDon(int maHD, LocalDate ngayLapHD, double tongTien, NhanVien nhanVien, List<ChiTietHoaDon> dsCTHD) {
 		super();
 		this.maHD = maHD;
 		this.ngayLapHD = ngayLapHD;
@@ -20,11 +20,15 @@ public class HoaDon {
 		this.dsCTHD = dsCTHD;
 	}
 
-	public String getMaHD() {
+	public HoaDon(int maHD) {
+		this.maHD = maHD;
+	}
+	
+	public int getMaHD() {
 		return maHD;
 	}
 
-	public void setMaHD(String maHD) {
+	public void setMaHD(int maHD) {
 		this.maHD = maHD;
 	}
 

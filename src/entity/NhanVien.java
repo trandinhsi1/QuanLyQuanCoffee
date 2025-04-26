@@ -21,6 +21,10 @@ public class NhanVien {
 		this.taiKhoan = taiKhoan;
 	}
 
+	public NhanVien(String maNhanVien) {
+		this.maNhanVien = maNhanVien;
+	}
+		
 	public String getMaNhanVien() {
 		return maNhanVien;
 	}
