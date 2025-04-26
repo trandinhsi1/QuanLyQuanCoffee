@@ -138,4 +138,20 @@ public class SanPhamDAO {
         }
         return list;
     }
+    // Phương thức đếm số lượng sản phẩm
+    public int demSanPham() {
+		String sql = "SELECT COUNT(*) AS total FROM SanPham";
+		int count = 0;
+
+		try (Connection conn = DatabaseConnection.getConnection();
+			 PreparedStatement ps = conn.prepareStatement(sql);
+			 ResultSet rs = ps.executeQuery()) {
+			if (rs.next()) {
+				count = rs.getInt("total");
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return count;
+	}
 }

@@ -36,7 +36,7 @@ public class QuanLySanPham extends JPanel implements ActionListener,MouseListene
 	JTextField txtMaSanPham = new JTextField();
 	JTextField txtTenSanPham = new JTextField();
 	JTextField txtGiaBan = new JTextField();
-	String[] items = {"Cà phê", "Trà", "Sinh tố", "Nước ép", "Nước ngọt"};
+	String[] items = {"Tất cả","Cà phê", "Trà", "Sinh tố", "Nước ép", "Nước ngọt"};
 	JComboBox<String> cboLoaiSanPham = new JComboBox<>(items);
 	JTextField txtAnhSanPham = new JTextField();
 	JButton btnChon = new JButton("Chọn Ảnh");
@@ -54,8 +54,8 @@ public class QuanLySanPham extends JPanel implements ActionListener,MouseListene
 	JButton btnTim = new JButton("Tìm");
 	JComboBox<String> cboLocTheoLoaiSanPham = new JComboBox<>(items);
 	String[] column = {"Mã sản phẩm", "Tên sản phẩm", "Giá bán", "Loại sản phẩm", "Ảnh sản phẩm"};
-	DefaultTableModel dfModel = new DefaultTableModel(null, column);
-	JTable table = new JTable(dfModel);
+	DefaultTableModel model = new DefaultTableModel(null, column);
+	JTable table = new JTable(model);
 	SanPhamDAO spdao = new SanPhamDAO();
 	private ImageIcon icon;
 	private Image scaled;
@@ -82,7 +82,7 @@ public class QuanLySanPham extends JPanel implements ActionListener,MouseListene
 		p6.setLayout(new BoxLayout(p6, BoxLayout.X_AXIS));
 		
 		
-		 icon = new ImageIcon("img/cafeden.jpg");
+		 icon = new ImageIcon(getClass().getResource("/img/logo.png"));
          scaled = icon.getImage().getScaledInstance(150, 150, Image.SCALE_SMOOTH);
          resizedIcon = new ImageIcon(scaled);
          
@@ -97,12 +97,7 @@ public class QuanLySanPham extends JPanel implements ActionListener,MouseListene
 		btnCapNhat.setPreferredSize(new Dimension(100, 40));
 		btnXoa.setPreferredSize(new Dimension(100, 40));
 		cboLoaiSanPham.setPreferredSize(new Dimension(100,50));
-//		
-//		txtMaSanPham.setColumns(20);
-//        txtTenSanPham.setColumns(20);
-//        txtGiaBan.setColumns(20);
-//        txtAnhSanPham.setColumns(20);
-//		
+	
 		btnChon.setPreferredSize(new Dimension(100, 0));
 		
 		p1.add(lblAnhSanPham);
@@ -174,6 +169,7 @@ public class QuanLySanPham extends JPanel implements ActionListener,MouseListene
 		btnCapNhat.addActionListener(this);
 		btnThem.addActionListener(this);
 		btnTim.addActionListener(this);
+		cboLocTheoLoaiSanPham.addActionListener(this);
 		table.addMouseListener(this);
 	}
 
@@ -198,13 +194,76 @@ public class QuanLySanPham extends JPanel implements ActionListener,MouseListene
 		if(e.getSource() == btnTim) {
 			Tim();
 		}
+		if(e.getSource() == cboLocTheoLoaiSanPham) {
+			locTheoSP();
+		}
+		
+	}
+
+
+	private void locTheoSP() {
+		String chonloaisp = cboLocTheoLoaiSanPham.getSelectedItem().toString();
+		List<SanPham> dsLoc = spdao.getSanPhamTheoLoai(chonloaisp);
+		
+		model.setRowCount(0);
+		if(chonloaisp.equals("Tất cả")) {
+			loadDanhSachSanPham();
+			return;
+		}
+		
+		for(SanPham sp : dsLoc) {
+			model.addRow(new Object[] {sp.getMaSanPham(),sp.getTenSanPham(),sp.getGiaBan(),sp.getLoaiSanPham(),sp.getAnhSanPham()});
+		}
 		
 	}
 
 
 	private void Tim() {
-		// TODO Auto-generated method stub
-		
+	    String maSPTim = txtTim.getText().trim(); // Lấy mã sản phẩm từ ô tìm kiếm
+	    if (maSPTim.isEmpty()) {
+	        JOptionPane.showMessageDialog(this, "Vui lòng nhập mã sản phẩm để tìm!", "Lỗi", JOptionPane.ERROR_MESSAGE);
+	        return;
+	    }
+
+	    // Sử dụng DAO để tìm sản phẩm
+	    SanPham sp = spdao.timSanPhamTheoMa(maSPTim);
+	    if (sp != null) {
+	        // Tìm thấy sản phẩm, giờ tìm dòng tương ứng trong bảng
+	        for (int i = 0; i < table.getRowCount(); i++) {
+	            String maSPTrongBang = table.getValueAt(i, 0).toString();
+	            if (maSPTrongBang.equalsIgnoreCase(maSPTim)) {
+	                // Bôi đen dòng
+	                table.setRowSelectionInterval(i, i);
+	                // Cuộn bảng đến dòng được chọn
+	                table.scrollRectToVisible(table.getCellRect(i, 0, true));
+	                // Tự động điền thông tin sản phẩm vào các ô nhập liệu (tương tự mouseClicked)
+	                txtMaSanPham.setText(sp.getMaSanPham());
+	                txtTenSanPham.setText(sp.getTenSanPham());
+	                txtGiaBan.setText(String.valueOf(sp.getGiaBan()));
+	                cboLoaiSanPham.setSelectedItem(sp.getLoaiSanPham());
+	                txtAnhSanPham.setText(sp.getAnhSanPham());
+
+	                // Hiển thị ảnh sản phẩm
+	                String pathAnh = sp.getAnhSanPham();
+	                if (pathAnh != null && !pathAnh.isEmpty()) {
+	                    File fileAnh = new File(pathAnh);
+	                    if (fileAnh.exists()) {
+	                        ImageIcon imageIcon = new ImageIcon(pathAnh);
+	                        Image scaledImage = imageIcon.getImage().getScaledInstance(150, 150, Image.SCALE_SMOOTH);
+	                        lblAnhSanPham.setIcon(new ImageIcon(scaledImage));
+	                    } else {
+	                        lblAnhSanPham.setIcon(null);
+	                        JOptionPane.showMessageDialog(this, "Không tìm thấy ảnh: " + pathAnh, "Lỗi", JOptionPane.WARNING_MESSAGE);
+	                    }
+	                } else {
+	                    lblAnhSanPham.setIcon(null);
+	                }
+	                return; // Thoát sau khi tìm thấy
+	            }
+	        }
+	    } else {
+	        JOptionPane.showMessageDialog(this, "Không tìm thấy sản phẩm với mã: " + maSPTim, "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+	    }
 	}
 
 
@@ -323,11 +382,11 @@ public class QuanLySanPham extends JPanel implements ActionListener,MouseListene
 
 
 	private void loadDanhSachSanPham() {
-		dfModel.setRowCount(0); 
+		model.setRowCount(0); 
 		List<SanPham> dssp = new ArrayList<SanPham>();
 		dssp = spdao.getAllSanPham();
 		for(SanPham sp : dssp) {
-			dfModel.addRow(new Object[] {sp.getMaSanPham(),sp.getTenSanPham(),sp.getGiaBan(),sp.getLoaiSanPham(),sp.getAnhSanPham()});
+			model.addRow(new Object[] {sp.getMaSanPham(),sp.getTenSanPham(),sp.getGiaBan(),sp.getLoaiSanPham(),sp.getAnhSanPham()});
 		}
 		
 	}

@@ -39,6 +39,8 @@ public class CustomUI {
          UIManager.put("Button.border", new LineBorder(COFFEE, 2, true));
          UIManager.put("Button.foreground", Color.WHITE);
          UIManager.put("Button.background", COFFEE);
+         UIManager.put("Button.focus", new Color(0, 0, 0, 0)); 
+         UIManager.put("Button.select", new Color(91, 64, 45)); // Màu nền khi nhấn nút
          
          // Tùy chỉnh cho JTable
          UIManager.put("Table.background", Color.WHITE);
@@ -47,6 +49,9 @@ public class CustomUI {
          UIManager.put("Table.font", new Font("Arial", Font.PLAIN, 13));
          UIManager.put("TableHeader.background", COFFEE);
          UIManager.put("TableHeader.foreground", Color.WHITE);
+         
+         // Tùy chỉnh cho JScrollPane
+         
          
     }
     
