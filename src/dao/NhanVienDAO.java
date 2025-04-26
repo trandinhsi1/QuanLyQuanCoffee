@@ -155,7 +155,7 @@ public class NhanVienDAO {
 		}
 		return count;
 	}
-<<<<<<< HEAD
+
 	
 	// Lấy mã nhân viên theo tài khoản
 	public String timNhanVienTheoTaiKhoan(TaiKhoan taiKhoan) {
@@ -175,7 +175,7 @@ public class NhanVienDAO {
 	    return maNV;
 	}
 
-=======
+
 	public String layTenNhanVienTheoMa(String maNhanVien) {
 	    String sql = "SELECT tenNhanVien FROM NhanVien WHERE maNhanVien = ?";
 	    try (Connection conn = DatabaseConnection.getConnection();
@@ -191,5 +191,5 @@ public class NhanVienDAO {
 	    }
 	    return "Không tìm thấy";
 	}
->>>>>>> main
+
 }

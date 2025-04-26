@@ -98,13 +98,12 @@ public class GiaoDien extends JFrame implements ActionListener {
 
         cardLayout = new CardLayout();
         cardPanel = new JPanel(cardLayout);
-<<<<<<< HEAD
+
 
         // Tạo các "thẻ" (card)
        
         
-=======
->>>>>>> main
+
         card3 = new QuanLySanPham();
         card4 = new QuanLyHoaDon();
         card2 = new BanHang(card4);
