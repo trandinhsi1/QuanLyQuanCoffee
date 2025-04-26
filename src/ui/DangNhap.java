@@ -63,12 +63,14 @@ public class DangNhap extends JFrame implements ActionListener {
         txtTenDangNhap.setBackground(new Color(245, 243, 240));
         txtTenDangNhap.setPreferredSize(new Dimension(200, 30));
 
+        
         txtMatKhau = new JPasswordField(20);
         txtMatKhau.setBorder(BorderFactory.createLineBorder(COFFEE));
         txtMatKhau.setFont(new Font("Arial", Font.PLAIN, 16));
         txtMatKhau.setBackground(new Color(245, 243, 240));
         txtMatKhau.setPreferredSize(new Dimension(200, 30));
 
+        
         btnQuenMatKhau = new JButton("Quên mật khẩu?");
         btnQuenMatKhau.setFont(new Font("Arial", Font.PLAIN, 12));
         btnQuenMatKhau.setForeground(Color.RED);
