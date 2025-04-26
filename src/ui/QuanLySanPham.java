@@ -36,7 +36,7 @@ public class QuanLySanPham extends JPanel implements ActionListener,MouseListene
 	JTextField txtMaSanPham = new JTextField();
 	JTextField txtTenSanPham = new JTextField();
 	JTextField txtGiaBan = new JTextField();
-	String[] items = {"Cà phê", "Trà", "Sinh tố", "Nước ép", "Nước ngọt"};
+	String[] items = {"Tất cả","Cà phê", "Trà", "Sinh tố", "Nước ép", "Nước ngọt"};
 	JComboBox<String> cboLoaiSanPham = new JComboBox<>(items);
 	JTextField txtAnhSanPham = new JTextField();
 	JButton btnChon = new JButton("Chọn Ảnh");
@@ -206,6 +206,10 @@ public class QuanLySanPham extends JPanel implements ActionListener,MouseListene
 		List<SanPham> dsLoc = spdao.getSanPhamTheoLoai(chonloaisp);
 		
 		model.setRowCount(0);
+		if(chonloaisp.equals("Tất cả")) {
+			loadDanhSachSanPham();
+			return;
+		}
 		
 		for(SanPham sp : dsLoc) {
 			model.addRow(new Object[] {sp.getMaSanPham(),sp.getTenSanPham(),sp.getGiaBan(),sp.getLoaiSanPham(),sp.getAnhSanPham()});
