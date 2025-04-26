@@ -23,4 +23,6 @@ public class ChiTietHoaDonDAO {
 		}
 		return n > 0;
 	}
+	//lấy sản phẩm bán chạy nhất
+	
 }

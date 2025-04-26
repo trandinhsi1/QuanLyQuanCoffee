@@ -123,15 +123,32 @@ public class NhanVienDAO {
 	        return false;
 	    }
 	}
-	//Đếm số lượng nhân viên
-	public int demNhanVien() {
+	//Đếm số lượng nhân viên có chức vụ là nhân viên
+	public int countEmployee() {
 		int count = 0;
-		String sql = "SELECT COUNT(*) AS count FROM NhanVien";
+		String sql = "SELECT COUNT(*) FROM NhanVien WHERE chucVuId = ?";
 		try (Connection conn = DatabaseConnection.getConnection();
-			 PreparedStatement ps = conn.prepareStatement(sql);
-			 ResultSet rs = ps.executeQuery()) {
+				PreparedStatement ps = conn.prepareStatement(sql)) {
+			ps.setInt(1, ChucVu.NHAN_VIEN.getId());
+			ResultSet rs = ps.executeQuery();
 			if (rs.next()) {
-				count = rs.getInt("count");
+				count = rs.getInt(1);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return count;
+	}
+	//Đếm số lượng nhân viên có chức vụ là quản lý
+	public int countManager() {
+		int count = 0;
+		String sql = "SELECT COUNT(*) FROM NhanVien WHERE chucVuId = ?";
+		try (Connection conn = DatabaseConnection.getConnection();
+				PreparedStatement ps = conn.prepareStatement(sql)) {
+			ps.setInt(1, ChucVu.QUAN_LY.getId());
+			ResultSet rs = ps.executeQuery();
+			if (rs.next()) {
+				count = rs.getInt(1);
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();

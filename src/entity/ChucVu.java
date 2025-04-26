@@ -2,7 +2,7 @@ package entity;
 
 public enum ChucVu {
     NHAN_VIEN(1, "Nhân viên"),
-    PHUC_VU(2, "Quản lý");
+    QUAN_LY(2, "Quản lý");
 
     private final int id;
     private final String chucVu;
