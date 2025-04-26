@@ -1,6 +1,7 @@
 package ui;
 
 import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
@@ -117,6 +118,9 @@ public class QuanLyHoaDon extends JPanel implements ActionListener, MouseListene
 		pRight.add(scrollPane, BorderLayout.CENTER);
 		
 		JPanel pSouth = new JPanel(new FlowLayout(FlowLayout.CENTER));
+		btnSua.setPreferredSize(new Dimension(60, 30));
+		btnXoa.setPreferredSize(new Dimension(60, 30));
+		btnTim.setPreferredSize(new Dimension(60, 30));
 		pSouth.add(btnSua);
 		pSouth.add(btnXoa);
 		pSouth.add(lblTim);

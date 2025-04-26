@@ -74,10 +74,14 @@ public class BanHang extends JPanel implements ActionListener, MouseListener{
 		p2.setLayout(new BoxLayout(p2, BoxLayout.X_AXIS));
 		JLabel lblMenu = new JLabel("Menu");
 		lblMenu.setFont(new Font("Times new Roman", Font.BOLD, 20));
+		btnTim.setPreferredSize(new Dimension(50, 25));
+		btnTim.setMinimumSize(new Dimension(50, 25));
+		btnTim.setMaximumSize(new Dimension(50, 25));
 		p1.add(lblMenu);
 		p2.add(new JLabel("Tên sản phẩm:"));
 		p2.add(Box.createHorizontalStrut(10));
 		p2.add(txtTim);
+		p2.add(Box.createHorizontalStrut(10));
 		p2.add(btnTim);
 		p2.add(Box.createHorizontalStrut(10));
 		p2.add(new JLabel("Loại sản phẩm:"));
@@ -106,6 +110,9 @@ public class BanHang extends JPanel implements ActionListener, MouseListener{
 		
 		
 		JPanel pSouth = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+		btnXoa.setPreferredSize(new Dimension(60, 30));
+		btnHuy.setPreferredSize(new Dimension(60, 30));
+		btnThanhToan.setPreferredSize(new Dimension(120, 30));
 		
 		
 		pSouth.add(btnXoa);
