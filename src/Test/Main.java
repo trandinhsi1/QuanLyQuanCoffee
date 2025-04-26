@@ -7,6 +7,11 @@ import css.CustomUI;
 public class Main {
 	public static void main(String[] args) {
 		CustomUI.applyCustomUI();
+<<<<<<< HEAD
 		new GiaoDien();		
+=======
+		new DangNhap();
+		
+>>>>>>> Quoc
 	}
 }
