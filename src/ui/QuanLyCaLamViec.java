@@ -148,8 +148,7 @@ public class QuanLyCaLamViec extends JPanel implements ActionListener,MouseListe
         model2=new DefaultTableModel(new String[] {"Chọn ngày","Chọn ca","Mã nhân viên","Tên nhân viên"},0);
         table2=new JTable(model2);
         scrollPane2=new JScrollPane(table2);
-        box9.add(scrollPane2);
-        
+        box9.add(scrollPane2);        
         
         pnlNgay = new JPanel();
         pnlNgay.setLayout(new BoxLayout(pnlNgay, BoxLayout.X_AXIS));
@@ -168,7 +167,6 @@ public class QuanLyCaLamViec extends JPanel implements ActionListener,MouseListe
         pnlCa.add(cboCa);
         
         loadDanhSachCaVaoComboBox();
-        
         
         pnlMa = new JPanel();
         pnlMa.setLayout(new BoxLayout(pnlMa, BoxLayout.X_AXIS));
@@ -251,7 +249,7 @@ public class QuanLyCaLamViec extends JPanel implements ActionListener,MouseListe
     }
     public void loadDanhSachNhanVienVaoComboBox() {
         try {
-            cboMaNV.removeAllItems(); // Xóa dữ liệu cũ trong combo box
+            cboMaNV.removeAllItems();// Xóa dữ liệu cũ trong combo box
             for (NhanVien nv : NhanVienDAO.getAllNhanVien()) {
                 cboMaNV.addItem(nv.getMaNhanVien()); // Thêm mã nhân viên vào combo box
             }
