@@ -191,7 +191,7 @@ public class QuanLyNhanVien extends JPanel implements ActionListener,MouseListen
 				JOptionPane.showMessageDialog(this, "Vui lòng nhập đầy đủ tất cả trường!");
 				return;
 			}
-			if(!maNhanVien.trim().matches("(NV|PV)\\d{3}")) {
+			if(!maNhanVien.trim().matches("(NV|QL)\\d{3}")) {
 				JOptionPane.showMessageDialog(this, "Mã nhân viên không hợp lệ!");
 				return;
 			}

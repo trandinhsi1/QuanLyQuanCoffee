@@ -16,6 +16,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Locale;
 
@@ -34,12 +35,19 @@ import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableModel;
 
+import dao.ChiTietHoaDonDAO;
+import dao.ConnectDB;
+import dao.HoaDonDAO;
+import dao.SanPhamDAO;
+import entity.ChiTietHoaDon;
+import entity.HoaDon;
+import entity.NhanVien;
 import entity.SanPham;
 
 public class BanHang extends JPanel implements ActionListener, MouseListener{
 	JTextField txtTim = new JTextField();
 	JButton btnTim = new JButton("Tìm");
-	String[] items = {"Tất cả", "Cà phê", "Nước ngọt", "Sinh tố", "Trà"};
+	String[] items = {"Tất cả", "Cà phê", "Nước ngọt", "Sinh tố", "Trà", "Nước ép"};
 	JComboBox<String> cboLoaiSanPham = new JComboBox<>(items);
 	ArrayList<SanPham> danhSachSanPham = new ArrayList<>();
 	JPanel pMenu;
@@ -52,22 +60,6 @@ public class BanHang extends JPanel implements ActionListener, MouseListener{
 	JLabel lblTongTien = new JLabel("0");
 	
 	public BanHang() {
-		
-		// demo ds sản phẩm
-		danhSachSanPham.add(new SanPham("SP01", "Cà phê đen", 20000, "Cà phê", "img/cafeden.jpg"));
-		danhSachSanPham.add(new SanPham("SP02", "Cà phê đen", 20000, "Cà phê", "img/cafeden.jpg"));
-		danhSachSanPham.add(new SanPham("SP03", "Cà phê đen", 20000, "Cà phê", "img/cafeden.jpg"));
-		danhSachSanPham.add(new SanPham("SP04", "Cà phê đen", 20000, "Cà phê", "img/cafeden.jpg"));
-		danhSachSanPham.add(new SanPham("SP05", "Cà phê đen", 20000, "Cà phê", "img/cafeden.jpg"));
-		danhSachSanPham.add(new SanPham("SP06", "Cà phê đen", 20000, "Cà phê", "img/cafeden.jpg"));
-		danhSachSanPham.add(new SanPham("SP06", "Cà phê đen", 20000, "Cà phê", "img/cafeden.jpg"));
-		danhSachSanPham.add(new SanPham("SP01", "Cà phê đen", 20000, "Cà phê", "img/cafeden.jpg"));
-		danhSachSanPham.add(new SanPham("SP01", "Cà phê đen", 20000, "Cà phê", "img/cafeden.jpg"));
-		danhSachSanPham.add(new SanPham("SP01", "Cà phê đen", 20000, "Cà phê", "img/cafeden.jpg"));
-		danhSachSanPham.add(new SanPham("SP01", "Cà phê đen", 20000, "Cà phê", "img/cafeden.jpg"));
-		
-		
-
 		
 		this.setLayout(new BorderLayout());
 		// Phần menu bên trái
@@ -127,10 +119,12 @@ public class BanHang extends JPanel implements ActionListener, MouseListener{
 		splitPane.setDividerLocation(0.7);
 		splitPane.setEnabled(false);
 
-   
+		
 		cboLoaiSanPham.addActionListener(this);
 		btnXoa.addActionListener(this);
 		btnHuy.addActionListener(this);
+		btnThanhToan.addActionListener(this);
+		btnTim.addActionListener(this);
 		
 		hienThiMenuTheoLoai();
 		this.add(splitPane);
@@ -139,10 +133,13 @@ public class BanHang extends JPanel implements ActionListener, MouseListener{
 	
 	private void hienThiMenuTheoLoai() {
         pMenu.removeAll();
-        String selected = (String) cboLoaiSanPham.getSelectedItem();
+        ConnectDB.getInstance().connect();
+		SanPhamDAO sp_dao = new SanPhamDAO();
+		danhSachSanPham = (ArrayList<SanPham>)sp_dao.getAllSanPham();
+        String selected = cboLoaiSanPham.getSelectedItem().toString().trim();
 
         for (SanPham sp : danhSachSanPham) {
-            if (selected.equals("Tất cả") || sp.getLoaiSanPham().equals(selected)) {
+            if (selected.equals("Tất cả") || sp.getLoaiSanPham().equalsIgnoreCase(selected)) {
             	JButton btnItem = new JButton(sp.getTenSanPham());
                 
                 // Ảnh sản phẩm
@@ -192,7 +189,64 @@ public class BanHang extends JPanel implements ActionListener, MouseListener{
         pMenu.repaint();
     }
 
-	
+	private void hienThiMenuTheoTen() {
+	    pMenu.removeAll();
+	    String tenCanTim = txtTim.getText().trim().toLowerCase();
+
+	    for (SanPham sp : danhSachSanPham) {
+	        if (sp.getTenSanPham().toLowerCase().contains(tenCanTim)) {
+	            JButton btnItem = new JButton(sp.getTenSanPham());
+
+	            // Ảnh sản phẩm
+	            ImageIcon icon = new ImageIcon(sp.getAnhSanPham());
+	            Image scaled = icon.getImage().getScaledInstance(100, 100, Image.SCALE_SMOOTH);
+	            ImageIcon resizedIcon = new ImageIcon(scaled);
+	            btnItem.setIcon(resizedIcon);
+
+	            // Tên sản phẩm
+	            btnItem.setHorizontalTextPosition(SwingConstants.CENTER);
+	            btnItem.setVerticalTextPosition(SwingConstants.BOTTOM);
+
+	            btnItem.addActionListener(new ActionListener() {
+	                @Override
+	                public void actionPerformed(ActionEvent e) {
+	                    String maSanPham = sp.getMaSanPham();
+	                    String tenSanPham = sp.getTenSanPham();
+	                    double giaBan = sp.getGiaBan();
+	                    int soLuong = 1;
+	                    double thanhTien = giaBan * soLuong;
+	                    boolean check = false;
+	                    for (int i = 0; i < table.getRowCount(); i++) {
+	                        if (maSanPham.equalsIgnoreCase(table.getValueAt(i, 0).toString())) {
+	                            soLuong = Integer.parseInt(table.getValueAt(i, 3).toString()) + 1;
+	                            thanhTien = giaBan * soLuong;
+	                            table.setValueAt(soLuong, i, 3);
+	                            table.setValueAt(thanhTien, i, 4);
+	                            check = true;
+	                        }
+	                    }
+	                    if (!check) {
+	                        Object[] row = {maSanPham, tenSanPham, giaBan, soLuong, thanhTien};
+	                        dfModel.addRow(row);
+	                    }
+
+	                    double tongTien = 0;
+	                    for (int i = 0; i < table.getRowCount(); i++) {
+	                        tongTien += Double.parseDouble(table.getValueAt(i, 4).toString());
+	                    }
+	                    DecimalFormat df = new DecimalFormat("#,###");
+	                    lblTongTien.setText(df.format(tongTien));
+	                }
+	            });
+
+	            pMenu.add(btnItem);
+	        }
+	    }
+
+	    pMenu.revalidate();
+	    pMenu.repaint();
+	}
+
 	
 	@Override
 	public void mouseClicked(MouseEvent e) {
@@ -229,15 +283,23 @@ public class BanHang extends JPanel implements ActionListener, MouseListener{
 			hienThiMenuTheoLoai();
 		}
 		if(e.getSource() == btnHuy) {
-			for(int i = table.getRowCount() - 1; i >= 0 ; i--) {
-				dfModel.removeRow(i);
+			int check = JOptionPane.showConfirmDialog(this, "Lưu ý", "Chắc chắn hủy hóa đơn", JOptionPane.YES_NO_OPTION);
+			if(check == JOptionPane.YES_OPTION) {
+				for(int i = table.getRowCount() - 1; i >= 0 ; i--) {
+					dfModel.removeRow(i);
+				}
+				lblTongTien.setText("0");
 			}
-			lblTongTien.setText("0");
 		}
 		if(e.getSource() == btnXoa) {
 			int row = table.getSelectedRow();
 			if(row != -1) {
-				dfModel.removeRow(row);
+				int check = JOptionPane.showConfirmDialog(this, "Lưu ý", "Chắc chắn xóa", JOptionPane.YES_NO_OPTION);
+				if(check == JOptionPane.YES_OPTION) {
+					dfModel.removeRow(row);
+				}	
+			}else {
+				JOptionPane.showMessageDialog(this, "Vui lòng chọn một dòng để xóa");
 			}
 			double tongTien = 0;
             for(int i = 0; i < table.getRowCount(); i++) {
@@ -247,6 +309,56 @@ public class BanHang extends JPanel implements ActionListener, MouseListener{
             String temp = df.format(tongTien);
             lblTongTien.setText(String.valueOf(temp));
 		}
+		if (e.getSource() == btnThanhToan) {
+			if(table.getRowCount() == 0) {
+				JOptionPane.showMessageDialog(this, "Chưa có chi tiết hóa đơn");
+				return;
+			}
+			ArrayList<ChiTietHoaDon> dsCTHD = new ArrayList<>();
+			double tongTien = 0;
+			for (int i = 0; i < table.getRowCount(); i++) {
+				String maSP = table.getValueAt(i, 0).toString();
+				double donGia = Double.parseDouble(table.getValueAt(i, 2).toString());
+				int soLuong = Integer.parseInt(table.getValueAt(i, 3).toString());
+				double thanhTien = Double.parseDouble(table.getValueAt(i, 4).toString());
+				tongTien += thanhTien;
+				
+				SanPham sp = new SanPham(maSP);
+				ChiTietHoaDon cthd = new ChiTietHoaDon(null, sp, soLuong, donGia, thanhTien);
+				dsCTHD.add(cthd);
+			}
+
+			// Tạo hóa đơn mới
+			LocalDate ngayLap = LocalDate.now();
+			NhanVien nv = new NhanVien("NV001"); // mã nhân viên hiện tại đăng nhập chưa biết nên cho NV001
+			HoaDon hd = new HoaDon(0, ngayLap, tongTien, nv, dsCTHD);
+
+			// Lưu hóa đơn
+			HoaDonDAO hd_dao = new HoaDonDAO();
+			boolean taoHDThanhCong = hd_dao.createHoaDon(hd);
+			if (taoHDThanhCong) {
+				int maHDMoi = hd_dao.getMaHoaDonMoiNhat();
+				HoaDon hoaDonMoi = new HoaDon(maHDMoi);
+
+				ChiTietHoaDonDAO cthd_dao = new ChiTietHoaDonDAO();
+				for (ChiTietHoaDon cthd : dsCTHD) {
+					cthd.setHoaDon(hoaDonMoi);
+					cthd_dao.createChiTietHD(cthd);
+				}
+
+				JOptionPane.showMessageDialog(this, "Lập hóa đơn thành công!");
+
+				// Reset bảng
+				dfModel.setRowCount(0);
+				lblTongTien.setText("0");
+			} else {
+				JOptionPane.showMessageDialog(this, "Lập hóa đơn thất bại!");
+			}
+		}
+		if(e.getSource() == btnTim) {
+			 hienThiMenuTheoTen();
+		}
+
 	}
 	
 	

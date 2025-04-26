@@ -10,6 +10,15 @@ public class ChiTietHoaDon {
 	private double donGia;
 	private double thanhTien;
 	
+	public ChiTietHoaDon(HoaDon hoaDon, SanPham sanPham, int soLuong, double donGia, double thanhTien) {
+		super();
+		this.hoaDon = hoaDon;
+		this.sanPham = sanPham;
+		this.soLuong = soLuong;
+		this.donGia = donGia;
+		this.thanhTien = thanhTien;
+	}
+	
 	public ChiTietHoaDon(int maCTHD, HoaDon hoaDon, SanPham sanPham, int soLuong, double donGia, double thanhTien) {
 		super();
 		this.maCTHD = maCTHD;
