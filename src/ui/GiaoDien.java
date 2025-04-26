@@ -32,7 +32,6 @@ public class GiaoDien extends JFrame implements ActionListener {
     
 
     private JButton btnDangXuat;
-	private TrangChu card1;
 	private BanHang card2;
 	private QuanLySanPham card3;
 	private QuanLyHoaDon card4;
@@ -119,7 +118,7 @@ public class GiaoDien extends JFrame implements ActionListener {
 
         // Tạo các "thẻ" (card)
 //       card1 = new TrangChu();
-        card2 = new BanHang();
+        
          card3 = new QuanLySanPham();
          card4 = new QuanLyHoaDon();
          card5 = new ThongKe();
