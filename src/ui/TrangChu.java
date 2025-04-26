@@ -13,7 +13,6 @@ import javax.swing.JPanel;
 
 public class TrangChu extends JPanel {
     private JPanel pThongtin;
-	private JLabel lblTieuDe;
 	private JLabel lblbanner;
 	private JPanel pTrangChu;
 
@@ -30,7 +29,7 @@ public class TrangChu extends JPanel {
         pThongtin.setOpaque(false); 
         pThongtin.add(createInfoLabel("⏰ Giờ mở cửa: 7AM - 10PM"));
         pThongtin.add(createInfoLabel("📍 Địa chỉ: 123 Nguyễn Văn Bảo, Gò Vấp, Tp.Hồ Chí Minh"));
-        pThongtin.add(createInfoLabel("☎ Hotline: 0909 123 456"));
+        pThongtin.add(createInfoLabel("☎ Hotline: 0375 034 145"));
 
        
         pTrangChu = new JPanel(new BorderLayout());
@@ -44,7 +43,7 @@ public class TrangChu extends JPanel {
     private JLabel createInfoLabel(String text) {
         JLabel lbl = new JLabel(text, JLabel.CENTER);
         lbl.setFont(new Font("SansSerif", Font.PLAIN, 18));
-        lbl.setForeground(Color.BLACK);
+        lbl.setForeground(Color.WHITE);
         return lbl;
     }
 }
