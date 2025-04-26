@@ -167,15 +167,15 @@ public class QuanLyCaLamViec extends JPanel implements ActionListener,MouseListe
         pnlCa.add(cboCa);
         
         loadDanhSachCaVaoComboBox();
-        
+      
         pnlMa = new JPanel();
         pnlMa.setLayout(new BoxLayout(pnlMa, BoxLayout.X_AXIS));
         lblMaNV = new JLabel("Mã NV :");
         cboMaNV = new JComboBox<>();
         pnlMa.add(lblMaNV);
         pnlMa.add(cboMaNV);
+          loadDanhSachNhanVienVaoComboBox();
         
-        loadDanhSachNhanVienVaoComboBox();
         
         pnlChiaCa = new JPanel();
         pnlChiaCa.setLayout(new BoxLayout(pnlChiaCa, BoxLayout.X_AXIS));

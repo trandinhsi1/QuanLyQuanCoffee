@@ -182,7 +182,7 @@ public class GiaoDien extends JFrame implements ActionListener {
         if(e.getSource() == btnCaLamViec) {
 			cardLayout.show(cardPanel, "Card7");
 			card7.loadDanhSachCaVaoComboBox();
-			
+			card7.loadDanhSachNhanVienVaoComboBox();
 		}
 
         if (e.getSource() == btnDangXuat) {
