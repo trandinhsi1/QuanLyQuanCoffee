@@ -27,13 +27,12 @@ public class GiaoDien extends JFrame implements ActionListener {
     private JButton btnThongKe;
     private JButton btnNhanVien;
     private final Color COFFEE = new Color(111, 78, 55);
-<<<<<<< HEAD
+
 	private JButton btnCaLamViec;
     
-=======
+
     private JButton btnDangXuat;
 
->>>>>>> Quoc
     public GiaoDien() {
         this.setTitle("Quản lý quán coffee");
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -75,7 +74,7 @@ public class GiaoDien extends JFrame implements ActionListener {
         btnNhanVien = new JButton("Nhân viên", new ImageIcon(getClass().getResource("/img/nhanvien.png")));
         btnNhanVien.setBackground(COFFEE);
         btnNhanVien.setForeground(Color.WHITE);
-<<<<<<< HEAD
+
         btnCaLamViec=new JButton("Ca làm việc",new ImageIcon(getClass().getResource("/img/calamviec.png")));
         btnCaLamViec.setBackground(COFFEE);
         
@@ -89,7 +88,7 @@ public class GiaoDien extends JFrame implements ActionListener {
         pNav.add(btnNhanVien);
         pNav.add(btnCaLamViec);
         
-=======
+
         btnDangXuat = new JButton("Đăng Xuất", new ImageIcon(getClass().getResource("/img/dangxuat.png")));
         btnDangXuat.setBackground(COFFEE);
         btnDangXuat.setForeground(Color.WHITE);
@@ -103,7 +102,7 @@ public class GiaoDien extends JFrame implements ActionListener {
         pNav.add(btnNhanVien);
         pNav.add(btnDangXuat);
 
->>>>>>> Quoc
+
         // Thêm logo và pNav vào pWest
         pWest.add(pLogo, BorderLayout.NORTH);
         pWest.add(pNav, BorderLayout.CENTER);
@@ -118,12 +117,12 @@ public class GiaoDien extends JFrame implements ActionListener {
         QuanLyHoaDon card4 = new QuanLyHoaDon();
         ThongKe card5 = new ThongKe();
         QuanLyNhanVien card6 = new QuanLyNhanVien();
-<<<<<<< HEAD
+
         QuanLyCaLamViec card7 = new QuanLyCaLamViec();
         
-=======
 
->>>>>>> Quoc
+
+
         // Thêm card vào panel với tên định danh
         cardPanel.add(card1, "Card1");
         cardPanel.add(card2, "Card2");
@@ -143,13 +142,11 @@ public class GiaoDien extends JFrame implements ActionListener {
         btnHoaDon.addActionListener(this);
         btnThongKe.addActionListener(this);
         btnNhanVien.addActionListener(this);
-<<<<<<< HEAD
+
         btnCaLamViec.addActionListener(this);
-        
-=======
+
         btnDangXuat.addActionListener(this);
 
->>>>>>> Quoc
         this.add(pWest, BorderLayout.WEST);
         this.add(cardPanel, BorderLayout.CENTER);
         this.setVisible(true);
@@ -175,11 +172,11 @@ public class GiaoDien extends JFrame implements ActionListener {
         if (e.getSource() == btnNhanVien) {
             cardLayout.show(cardPanel, "Card6");
         }
-<<<<<<< HEAD
+
         if(e.getSource() == btnCaLamViec) {
 			cardLayout.show(cardPanel, "Card7");
 		}
-=======
+
         if (e.getSource() == btnDangXuat) {
             // Hiển thị thông báo xác nhận
             int confirm = JOptionPane.showConfirmDialog(this, 
@@ -195,6 +192,6 @@ public class GiaoDien extends JFrame implements ActionListener {
             }
             // Nếu người dùng chọn "Không": không làm gì, giữ nguyên giao diện
         }
->>>>>>> Quoc
+
     }
 }
