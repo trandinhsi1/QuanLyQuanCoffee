@@ -156,4 +156,22 @@ public class NhanVienDAO {
 		return count;
 	}
 	
+	// Lấy mã nhân viên theo tài khoản
+	public String timNhanVienTheoTaiKhoan(TaiKhoan taiKhoan) {
+	    String maNV = "";
+	    try {
+	        Connection con = ConnectDB.getConnection();
+	        String sql = "SELECT maNhanVien FROM NhanVien WHERE maTaiKhoan = ?";
+	        PreparedStatement stmt = con.prepareStatement(sql);
+	        stmt.setString(1, taiKhoan.getMaTaiKhoan());
+	        ResultSet rs = stmt.executeQuery();
+	        if (rs.next()) {
+	            maNV = rs.getString(1);
+	        }
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    }
+	    return maNV;
+	}
+
 }

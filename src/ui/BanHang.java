@@ -2,9 +2,6 @@ package ui;
 
 
 import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
@@ -15,7 +12,6 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.text.DecimalFormat;
-import java.text.NumberFormat;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Locale;
@@ -38,11 +34,13 @@ import javax.swing.table.DefaultTableModel;
 import dao.ChiTietHoaDonDAO;
 import dao.ConnectDB;
 import dao.HoaDonDAO;
+import dao.NhanVienDAO;
 import dao.SanPhamDAO;
 import entity.ChiTietHoaDon;
 import entity.HoaDon;
 import entity.NhanVien;
 import entity.SanPham;
+import entity.TaiKhoan;
 
 public class BanHang extends JPanel implements ActionListener, MouseListener{
 	JTextField txtTim = new JTextField();
@@ -344,7 +342,10 @@ public class BanHang extends JPanel implements ActionListener, MouseListener{
 
 			// Tạo hóa đơn mới
 			LocalDate ngayLap = LocalDate.now();
-			NhanVien nv = new NhanVien("NV001"); // mã nhân viên hiện tại đăng nhập chưa biết nên cho NV001
+			TaiKhoan tk = DangNhap.taiKhoanHienTai;
+			NhanVienDAO nv_dao = new NhanVienDAO();
+			String maNV = nv_dao.timNhanVienTheoTaiKhoan(tk);
+			NhanVien nv = new NhanVien(maNV);
 			HoaDon hd = new HoaDon(0, ngayLap, tongTien, nv, dsCTHD);
 
 			// Lưu hóa đơn

@@ -99,7 +99,7 @@ public class DangNhap extends JFrame implements ActionListener {
         pnlButton.add(btnDangNhap);
         pnlButton.add(btnThoat);
 
-        lblMatKhau.setPreferredSize(lblTenDangNhap.getPreferredSize());
+        
 
         pnl1 = new JPanel();
         pnl1.setLayout(new BoxLayout(pnl1, BoxLayout.X_AXIS));
