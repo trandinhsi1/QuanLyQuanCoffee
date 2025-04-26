@@ -26,7 +26,7 @@ public class DangNhap extends JFrame implements ActionListener {
 
     public DangNhap() {
         setTitle("Đăng nhập");
-        setSize(700, 400);
+        setSize(750, 400);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
         setLayout(new GridLayout(1, 2));
@@ -64,14 +64,16 @@ public class DangNhap extends JFrame implements ActionListener {
         txtTenDangNhap.setBackground(new Color(245, 243, 240));
         txtTenDangNhap.setPreferredSize(new Dimension(200, 30));
 
+        
         txtMatKhau = new JPasswordField(20);
         txtMatKhau.setBorder(BorderFactory.createLineBorder(COFFEE));
         txtMatKhau.setFont(new Font("Arial", Font.PLAIN, 16));
         txtMatKhau.setBackground(new Color(245, 243, 240));
         txtMatKhau.setPreferredSize(new Dimension(200, 30));
 
+        
         btnQuenMatKhau = new JButton("Quên mật khẩu?");
-        btnQuenMatKhau.setFont(new Font("Arial", Font.PLAIN, 12));
+        btnQuenMatKhau.setFont(new Font("Arial", Font.PLAIN, 15));
         btnQuenMatKhau.setForeground(Color.RED);
         btnQuenMatKhau.setBorderPainted(false);
         btnQuenMatKhau.setContentAreaFilled(false);
@@ -101,27 +103,26 @@ public class DangNhap extends JFrame implements ActionListener {
 
         lblMatKhau.setPreferredSize(lblTenDangNhap.getPreferredSize());
 
-        pnl1 = new JPanel();
-        pnl1.setLayout(new BoxLayout(pnl1, BoxLayout.X_AXIS));
+        pnl1 = new JPanel(new BorderLayout(10, 0));
         pnl1.setBackground(Color.WHITE);
-        pnl1.add(lblTenDangNhap);
-        pnl1.add(Box.createHorizontalStrut(10));
-        pnl1.add(txtTenDangNhap);
+        pnl1.add(lblTenDangNhap, BorderLayout.WEST);
+        pnl1.add(txtTenDangNhap, BorderLayout.CENTER);
 
         pnl2 = new JPanel();
         pnl2.setLayout(new BoxLayout(pnl2, BoxLayout.Y_AXIS));
         pnl2.setBackground(Color.WHITE);
-        JPanel passwordFieldPanel = new JPanel();
-        passwordFieldPanel.setLayout(new BoxLayout(passwordFieldPanel, BoxLayout.X_AXIS));
+        
+        JPanel passwordFieldPanel = new JPanel(new BorderLayout(10, 0));
         passwordFieldPanel.setBackground(Color.WHITE);
-        passwordFieldPanel.add(lblMatKhau);
-        passwordFieldPanel.add(Box.createHorizontalStrut(10));
-        passwordFieldPanel.add(txtMatKhau);
-        pnl2.add(passwordFieldPanel);
-        pnl2.add(Box.createVerticalStrut(5));
-        JPanel quenMatKhauPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+        passwordFieldPanel.add(lblMatKhau, BorderLayout.WEST);
+        passwordFieldPanel.add(txtMatKhau, BorderLayout.CENTER);
+        
+        JPanel quenMatKhauPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT, 0, 0));
         quenMatKhauPanel.setBackground(Color.WHITE);
         quenMatKhauPanel.add(btnQuenMatKhau);
+        
+        pnl2.add(passwordFieldPanel);
+        pnl2.add(Box.createVerticalStrut(5));
         pnl2.add(quenMatKhauPanel);
 
         pnlDangNhap.add(lblDangNhap);

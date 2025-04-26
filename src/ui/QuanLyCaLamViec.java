@@ -8,6 +8,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.ZoneId;
@@ -17,8 +18,12 @@ import javax.swing.*;
 import javax.swing.JSpinner.DateEditor;
 import javax.swing.table.DefaultTableModel;
 
+import com.toedter.calendar.JDateChooser;
+
 import dao.CaLamViecDAO;
+import dao.NhanVienDAO;
 import entity.CaLamViec;
+import entity.NhanVien;
 
 public class QuanLyCaLamViec extends JPanel implements ActionListener,MouseListener {
     private JLabel lblTieuDe;
@@ -55,6 +60,19 @@ public class QuanLyCaLamViec extends JPanel implements ActionListener,MouseListe
 	private DefaultTableModel model2;
 	private JTable table2;
 	private JScrollPane scrollPane2;
+	private JDateChooser dateChooser;
+	private JComboBox<String> cboCa;
+	private JComboBox<String> cboMaNV;
+	private JButton btnChiaCa;
+	private JPanel pnlNgay;
+	private JLabel lblngay;
+	private JPanel pnlCa;
+	private JLabel lblCa;
+	private JPanel pnlMa;
+	private JLabel lblMaNV;
+	private JPanel pnlChiaCa;
+	NhanVienDAO nvdao = new NhanVienDAO();
+	
 
     QuanLyCaLamViec() {
         setLayout(null);
@@ -130,10 +148,53 @@ public class QuanLyCaLamViec extends JPanel implements ActionListener,MouseListe
         model2=new DefaultTableModel(new String[] {"Chọn ngày","Chọn ca","Mã nhân viên","Tên nhân viên"},0);
         table2=new JTable(model2);
         scrollPane2=new JScrollPane(table2);
-        box9.add(scrollPane2);
+        box9.add(scrollPane2);        
+        
+        pnlNgay = new JPanel();
+        pnlNgay.setLayout(new BoxLayout(pnlNgay, BoxLayout.X_AXIS));
+        lblngay = new JLabel("Ngày :");
+        dateChooser = new JDateChooser();
+        dateChooser.setDateFormatString("dd/MM/yyyy");
+        pnlNgay.add(lblngay);
+        pnlNgay.add(dateChooser);
+        
+        pnlCa = new JPanel();
+        pnlCa.setLayout(new BoxLayout(pnlCa, BoxLayout.X_AXIS));
+        lblCa = new JLabel("Ca :");
+        
+        cboCa = new JComboBox();
+        pnlCa.add(lblCa);
+        pnlCa.add(cboCa);
+        
+        loadDanhSachCaVaoComboBox();
+      
+        pnlMa = new JPanel();
+        pnlMa.setLayout(new BoxLayout(pnlMa, BoxLayout.X_AXIS));
+        lblMaNV = new JLabel("Mã NV :");
+        cboMaNV = new JComboBox<>();
+        pnlMa.add(lblMaNV);
+        pnlMa.add(cboMaNV);
+          loadDanhSachNhanVienVaoComboBox();
         
         
+        pnlChiaCa = new JPanel();
+        pnlChiaCa.setLayout(new BoxLayout(pnlChiaCa, BoxLayout.X_AXIS));
+        btnChiaCa = new JButton("Chia ca");
+        btnChiaCa.setPreferredSize(new Dimension(110, 50));
+        pnlChiaCa.add(btnChiaCa);
         
+        lblngay.setPreferredSize(lblMaNV.getPreferredSize());
+        lblCa.setPreferredSize(lblMaNV.getPreferredSize());
+        
+        pnlRight.add(Box.createVerticalStrut(40));
+        pnlRight.add(pnlNgay);
+        pnlRight.add(Box.createVerticalStrut(20));
+        pnlRight.add(pnlCa);
+        pnlRight.add(Box.createVerticalStrut(20));
+        pnlRight.add(pnlMa);
+        pnlRight.add(Box.createVerticalStrut(20));
+        pnlRight.add(pnlChiaCa);
+        pnlRight.add(Box.createVerticalStrut(20));
         
         Dimension d = new Dimension(120, 20);
         lblMaCaLamViec.setPreferredSize(d);
@@ -152,6 +213,7 @@ public class QuanLyCaLamViec extends JPanel implements ActionListener,MouseListe
         btnXoa.addActionListener(this);
         btnCapNhat.addActionListener(this);
         btnXoaTrang.addActionListener(this);
+        btnChiaCa.addActionListener(this);
         
         setVisible(true);
     }
@@ -166,10 +228,70 @@ public class QuanLyCaLamViec extends JPanel implements ActionListener,MouseListe
             capNhatCaLamViec();
         } else if (e.getSource() == btnXoaTrang) {
             xoaTrang();
+        } else if (e.getSource() == btnChiaCa) {
+           chiaCa();
+        }
+    }
+    
+    public void loadDanhSachCaVaoComboBox() {
+        try {
+            cboCa.removeAllItems(); // Xóa dữ liệu cũ trong combo box
+            for (CaLamViec ca : caLamViecDAO.layDanhSachCaLamViec()) {
+                cboCa.addItem(ca.getTenCaLamViec()); // Thêm tên ca làm việc vào combo box
+            }
+            if (cboCa.getItemCount() == 0) {
+                JOptionPane.showMessageDialog(this, "Không có ca làm việc nào trong hệ thống!", "Thông báo", JOptionPane.WARNING_MESSAGE);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Lỗi khi tải danh sách ca!", "Lỗi", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+    public void loadDanhSachNhanVienVaoComboBox() {
+        try {
+            cboMaNV.removeAllItems();// Xóa dữ liệu cũ trong combo box
+            for (NhanVien nv : NhanVienDAO.getAllNhanVien()) {
+                cboMaNV.addItem(nv.getMaNhanVien()); // Thêm mã nhân viên vào combo box
+            }
+            if (cboMaNV.getItemCount() == 0) {
+                JOptionPane.showMessageDialog(this, "Không có nhân viên nào trong hệ thống!", "Thông báo", JOptionPane.WARNING_MESSAGE);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Lỗi khi tải danh sách nhân viên!", "Lỗi", JOptionPane.ERROR_MESSAGE);
         }
     }
 
-    private void themCaLamViec() {
+    private void chiaCa() {
+        Date selectedDate = dateChooser.getDate();
+        String selectedCa = (String) cboCa.getSelectedItem();
+        String selectedMaNV = (String) cboMaNV.getSelectedItem();
+        
+        if (selectedDate == null || selectedCa == null || selectedMaNV == null) {
+            JOptionPane.showMessageDialog(this, "Vui lòng chọn đầy đủ Ngày, Ca và Mã nhân viên!", "Lỗi", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+        String formattedDate = sdf.format(selectedDate);
+        
+        String tenNhanVien = nvdao.layTenNhanVienTheoMa(selectedMaNV); // Sửa dòng này
+
+        for (int i = 0; i < model2.getRowCount(); i++) {
+            String ngayTrongBang = (String) model2.getValueAt(i, 0);
+            String maNVTrongBang = (String) model2.getValueAt(i, 2);
+            if (ngayTrongBang.equals(formattedDate) && maNVTrongBang.equals(selectedMaNV)) {
+                JOptionPane.showMessageDialog(this, "Nhân viên này đã được phân ca trong ngày này!", "Thông báo", JOptionPane.WARNING_MESSAGE);
+                return;
+            }
+        }
+
+        model2.addRow(new Object[] {formattedDate, selectedCa, selectedMaNV, tenNhanVien});
+    }
+    
+
+
+	private void themCaLamViec() {
         // TODO Auto-generated method stub
         
         String maCaLamViec = txtMaCaLamViec.getText();
@@ -200,12 +322,14 @@ public class QuanLyCaLamViec extends JPanel implements ActionListener,MouseListe
         if(caLamViecDAO.themCaLamViec(caLamViec)) {
             JOptionPane.showMessageDialog(this, "Thêm ca làm việc thành công!", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
             loadDanhSachCaLamViec();
+            loadDanhSachNhanVienVaoComboBox();
+//            loadDanhSachCaVaoComboBox();
         } else {
             JOptionPane.showMessageDialog(this, "Thêm ca làm việc thất bại!", "Lỗi", JOptionPane.ERROR_MESSAGE);
             return;
         }
     }
-
+	
     private void loadDanhSachCaLamViec() {
         // TODO Auto-generated method stub
         model.setRowCount(0);
@@ -223,6 +347,8 @@ public class QuanLyCaLamViec extends JPanel implements ActionListener,MouseListe
             if (caLamViecDAO.xoaCaLamViec(maCaLamViec)) {
                 JOptionPane.showMessageDialog(this, "Xóa ca làm việc thành công!", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
                 loadDanhSachCaLamViec();
+                loadDanhSachNhanVienVaoComboBox();
+//                loadDanhSachCaVaoComboBox();
             } else {
                 JOptionPane.showMessageDialog(this, "Xóa ca làm việc thất bại!", "Lỗi", JOptionPane.ERROR_MESSAGE);
             }
@@ -247,6 +373,8 @@ public class QuanLyCaLamViec extends JPanel implements ActionListener,MouseListe
             if (caLamViecDAO.capNhatCaLamViec(caLamViec)) {
                 JOptionPane.showMessageDialog(this, "Cập nhật ca làm việc thành công!", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
                 loadDanhSachCaLamViec();
+//                loadDanhSachCaVaoComboBox();
+                loadDanhSachNhanVienVaoComboBox();
             } else {
                 JOptionPane.showMessageDialog(this, "Cập nhật ca làm việc thất bại!", "Lỗi", JOptionPane.ERROR_MESSAGE);
             }

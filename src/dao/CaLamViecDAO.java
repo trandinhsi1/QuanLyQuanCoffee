@@ -38,6 +38,7 @@ public class CaLamViecDAO {
 			return false;
 		}
 	}
+	
 	// Xóa ca làm việc
 	public boolean xoaCaLamViec(String maCaLamViec) {
 		String sql = "DELETE FROM CaLamViec WHERE maCaLamViec = ?";
