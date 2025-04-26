@@ -40,6 +40,7 @@ public class GiaoDien extends JFrame implements ActionListener {
 	private QuanLyCaLamViec card7;
 
     public GiaoDien() {
+    	
         this.setTitle("Quản lý quán coffee");
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
         this.setSize(1200, 700);
@@ -61,8 +62,6 @@ public class GiaoDien extends JFrame implements ActionListener {
         // Thêm logo vào pLogo
         pLogo.add(lblLogo);
         pLogo.setLayout(new FlowLayout());
-
-       
         btnBanHang = new JButton("Bán hàng", new ImageIcon(getClass().getResource("/img/banhang.png")));
         btnBanHang.setBackground(COFFEE);
         btnBanHang.setForeground(Color.WHITE);
@@ -78,18 +77,14 @@ public class GiaoDien extends JFrame implements ActionListener {
         btnNhanVien = new JButton("Nhân viên", new ImageIcon(getClass().getResource("/img/nhanvien.png")));
         btnNhanVien.setBackground(COFFEE);
         btnNhanVien.setForeground(Color.WHITE);
-
         btnCaLamViec=new JButton("Ca làm việc",new ImageIcon(getClass().getResource("/img/calamviec.png")));
         btnCaLamViec.setBackground(COFFEE);
         
-        
-       
-
         btnDangXuat = new JButton("Đăng Xuất", new ImageIcon(getClass().getResource("/img/dangxuat.png")));
         btnDangXuat.setBackground(COFFEE);
         btnDangXuat.setForeground(Color.WHITE);
-        // Thêm các nút vào pNav
-           
+        
+        // Thêm các nút vào pNav      
         pNav.add(btnBanHang);       
         pNav.add(btnHoaDon);        
         pNav.add(btnSanPham);        
@@ -97,17 +92,19 @@ public class GiaoDien extends JFrame implements ActionListener {
         pNav.add(btnNhanVien);
         pNav.add(btnCaLamViec);
         pNav.add(btnDangXuat);
-
         // Thêm logo và pNav vào pWest
         pWest.add(pLogo, BorderLayout.NORTH);
         pWest.add(pNav, BorderLayout.CENTER);
 
         cardLayout = new CardLayout();
         cardPanel = new JPanel(cardLayout);
+<<<<<<< HEAD
 
         // Tạo các "thẻ" (card)
        
         
+=======
+>>>>>>> main
         card3 = new QuanLySanPham();
         card4 = new QuanLyHoaDon();
         card2 = new BanHang(card4);
@@ -117,7 +114,7 @@ public class GiaoDien extends JFrame implements ActionListener {
         
 
         // Thêm card vào panel với tên định danh
-       
+
         cardPanel.add(card2, "Card2");
         cardPanel.add(card3, "Card3");
         cardPanel.add(card4, "Card4");
@@ -129,7 +126,7 @@ public class GiaoDien extends JFrame implements ActionListener {
         cardLayout.show(cardPanel, "Card2");
 
         // Lắng nghe các sự kiện nút
-        
+//        btnTrangChu.addActionListener(this);
         btnBanHang.addActionListener(this);
         btnSanPham.addActionListener(this);
         btnHoaDon.addActionListener(this);
@@ -167,6 +164,8 @@ public class GiaoDien extends JFrame implements ActionListener {
 
         if(e.getSource() == btnCaLamViec) {
 			cardLayout.show(cardPanel, "Card7");
+			card7.loadDanhSachCaVaoComboBox();
+			card7.loadDanhSachNhanVienVaoComboBox();
 		}
 
         if (e.getSource() == btnDangXuat) {

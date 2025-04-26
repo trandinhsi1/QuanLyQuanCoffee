@@ -248,6 +248,10 @@ public class QuanLyNhanVien extends JPanel implements ActionListener,MouseListen
 			txtMaTaiKhoan.setText("");
 			txtTenDangNhap.setText("");
 			txtMatKhau.setText("");
+			txtMa.setEditable(true);
+		    txtMa.setEnabled(true);
+		    txtMaTaiKhoan.setEditable(true);
+		    txtMaTaiKhoan.setEnabled(true);
 		}
 		
 		if(e.getSource()==btnCapNhat) {
@@ -290,6 +294,8 @@ public class QuanLyNhanVien extends JPanel implements ActionListener,MouseListen
 					return;
 				}
 		}
+		
+		
 }
 	public void loadNhanVien() {
 		model.setRowCount(0);
