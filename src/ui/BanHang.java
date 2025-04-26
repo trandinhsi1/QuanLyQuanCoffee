@@ -59,6 +59,7 @@ public class BanHang extends JPanel implements ActionListener, MouseListener{
 	JTable table = new JTable(dfModel);
 	JLabel lblTongTien = new JLabel("0");
 	QuanLyHoaDon qlhd = new QuanLyHoaDon();
+	private SanPhamDAO spdao=new SanPhamDAO(); 
 	
 	
 	public BanHang(QuanLyHoaDon qlhd) {	
@@ -255,7 +256,18 @@ public class BanHang extends JPanel implements ActionListener, MouseListener{
 	    pMenu.revalidate();
 	    pMenu.repaint();
 	}
-
+	//load sản phẩm lên bảng
+	public void loadSanPham() {
+		dfModel.setRowCount(0);
+		ArrayList<SanPham> dsSanPham = new ArrayList<SanPham>();
+		dsSanPham=spdao.getAllSanPham();
+		for(SanPham sp : dsSanPham) {
+			Object[] row = {sp.getMaSanPham(), sp.getTenSanPham(), sp.getGiaBan(), 1, sp.getGiaBan()};
+			dfModel.addRow(row);
+		}
+		
+		
+	}
 	
 	@Override
 	public void mouseClicked(MouseEvent e) {

@@ -62,10 +62,6 @@ public class GiaoDien extends JFrame implements ActionListener {
         // Thêm logo vào pLogo
         pLogo.add(lblLogo);
         pLogo.setLayout(new FlowLayout());
-//
-//        btnTrangChu = new JButton("Trang chủ", new ImageIcon(getClass().getResource("/img/home.png")));
-//        btnTrangChu.setBackground(COFFEE);
-//        btnTrangChu.setForeground(Color.WHITE);
         btnBanHang = new JButton("Bán hàng", new ImageIcon(getClass().getResource("/img/banhang.png")));
         btnBanHang.setBackground(COFFEE);
         btnBanHang.setForeground(Color.WHITE);
@@ -84,52 +80,36 @@ public class GiaoDien extends JFrame implements ActionListener {
         btnCaLamViec=new JButton("Ca làm việc",new ImageIcon(getClass().getResource("/img/calamviec.png")));
         btnCaLamViec.setBackground(COFFEE);
         
+        btnDangXuat = new JButton("Đăng Xuất", new ImageIcon(getClass().getResource("/img/dangxuat.png")));
+        btnDangXuat.setBackground(COFFEE);
+        btnDangXuat.setForeground(Color.WHITE);
         
-        // Thêm các nút vào pNav
-//        pNav.add(btnTrangChu);      
+        // Thêm các nút vào pNav      
         pNav.add(btnBanHang);       
         pNav.add(btnHoaDon);        
         pNav.add(btnSanPham);        
         pNav.add(btnThongKe);
         pNav.add(btnNhanVien);
         pNav.add(btnCaLamViec);
-        
-
-        btnDangXuat = new JButton("Đăng Xuất", new ImageIcon(getClass().getResource("/img/dangxuat.png")));
-        btnDangXuat.setBackground(COFFEE);
-        btnDangXuat.setForeground(Color.WHITE);
-
-        // Thêm các nút vào pNav
-//        pNav.add(btnTrangChu);
-        pNav.add(btnBanHang);
-        pNav.add(btnHoaDon);
-        pNav.add(btnSanPham);
-        pNav.add(btnThongKe);
-        pNav.add(btnNhanVien);
         pNav.add(btnDangXuat);
-
-
         // Thêm logo và pNav vào pWest
         pWest.add(pLogo, BorderLayout.NORTH);
         pWest.add(pNav, BorderLayout.CENTER);
 
         cardLayout = new CardLayout();
         cardPanel = new JPanel(cardLayout);
-
-        // Tạo các "thẻ" (card)
-//       card1 = new TrangChu();
-        
-         card3 = new QuanLySanPham();
-         card4 = new QuanLyHoaDon();
-         card5 = new ThongKe();
+        card3 = new QuanLySanPham();
+        card4 = new QuanLyHoaDon();
+        card2 = new BanHang(card4);
+        card5 = new ThongKe();
         card6 = new QuanLyNhanVien();
-         card7 = new QuanLyCaLamViec();
+        card7 = new QuanLyCaLamViec();
         
 
 
 
         // Thêm card vào panel với tên định danh
-//        cardPanel.add(card1, "Card1");
+
         cardPanel.add(card2, "Card2");
         cardPanel.add(card3, "Card3");
         cardPanel.add(card4, "Card4");
@@ -138,7 +118,7 @@ public class GiaoDien extends JFrame implements ActionListener {
         cardPanel.add(card7, "Card7");
 
         // Hiển thị card cụ thể
-        cardLayout.show(cardPanel, "Card1");
+        cardLayout.show(cardPanel, "Card2");
 
         // Lắng nghe các sự kiện nút
 //        btnTrangChu.addActionListener(this);
@@ -159,9 +139,7 @@ public class GiaoDien extends JFrame implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        if (e.getSource() == btnTrangChu) {
-            cardLayout.show(cardPanel, "Card1");
-        }
+        
         if (e.getSource() == btnBanHang) {
             cardLayout.show(cardPanel, "Card2");
         }
@@ -172,6 +150,7 @@ public class GiaoDien extends JFrame implements ActionListener {
             cardLayout.show(cardPanel, "Card4");
         }
         if (e.getSource() == btnThongKe) {
+        	card5.loadData();
             cardLayout.show(cardPanel, "Card5");
         }
         if (e.getSource() == btnNhanVien) {

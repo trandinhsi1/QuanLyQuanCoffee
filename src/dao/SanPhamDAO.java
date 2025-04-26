@@ -68,8 +68,8 @@ public class SanPhamDAO {
     }
 
     // Phương thức lấy danh sách sản phẩm
-    public List<SanPham> getAllSanPham() {
-        List<SanPham> list = new ArrayList<>();
+    public ArrayList<SanPham> getAllSanPham() {
+        ArrayList<SanPham> list = new ArrayList<>();
         String sql = "SELECT maSanPham, tenSanPham, giaBan, loaiSanPham, anhSanPham FROM SanPham";
 
         try (Connection conn = DatabaseConnection.getConnection();
