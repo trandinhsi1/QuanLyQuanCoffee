@@ -191,5 +191,34 @@ public class NhanVienDAO {
 	    }
 	    return "Không tìm thấy";
 	}
+	//lấy nhân viên theo tài khoản
+	public NhanVien layNhanVienTheoTaiKhoan(TaiKhoan taiKhoan) {
+		NhanVien nhanVien = null;
+		String sql = "SELECT nv.maNhanVien, nv.tenNhanVien, nv.gioiTinh, nv.soDienThoai, cv.chucVu, tk.maTaiKhoan, tk.tenDangNhap, tk.matKhau " +
+		             "FROM NhanVien nv " +
+		             "JOIN ChucVu cv ON nv.chucVuId = cv.id " +
+		             "JOIN TaiKhoan tk ON nv.maTaiKhoan = tk.maTaiKhoan " +
+		             "WHERE tk.maTaiKhoan = ?";
+		try (Connection conn = DatabaseConnection.getConnection();
+		     PreparedStatement ps = conn.prepareStatement(sql)) {
+			ps.setString(1, taiKhoan.getMaTaiKhoan());
+			ResultSet rs = ps.executeQuery();
+			if (rs.next()) {
+				String maNhanVien = rs.getString("maNhanVien");
+				String tenNhanVien = rs.getString("tenNhanVien");
+				String gioiTinh = rs.getString("gioiTinh");
+				String soDienThoai = rs.getString("soDienThoai");
+				String tenChucVu = rs.getString("chucVu");
+				String maTaiKhoan = rs.getString("maTaiKhoan");
+				String tenDangNhap = rs.getString("tenDangNhap");
+				String matKhau = rs.getString("matKhau");
+				ChucVu chucVu= ChucVu.fromName(tenChucVu);	
+				nhanVien = new NhanVien(maNhanVien, tenNhanVien, gioiTinh, soDienThoai, chucVu, taiKhoan);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return nhanVien;
+	}
 
 }

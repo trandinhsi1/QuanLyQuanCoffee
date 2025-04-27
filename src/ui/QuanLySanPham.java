@@ -171,6 +171,15 @@ public class QuanLySanPham extends JPanel implements ActionListener,MouseListene
 		btnTim.addActionListener(this);
 		cboLocTheoLoaiSanPham.addActionListener(this);
 		table.addMouseListener(this);
+		
+		//phân quyền nhân viên và quản lý
+		if(DangNhap.nhanVienHienTai.getChucVu().getChucVu().equals("Nhân viên")) {
+			btnThem.setEnabled(false);
+			btnXoa.setEnabled(false);
+			btnCapNhat.setEnabled(false);
+			btnChon.setEnabled(false);
+			btnXoaTrang.setEnabled(false);
+		}
 	}
 
 

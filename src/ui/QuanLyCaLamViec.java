@@ -144,7 +144,6 @@ public class QuanLyCaLamViec extends JPanel implements ActionListener,MouseListe
         lblChiaCa.setFont(new Font("Arial", Font.BOLD, 20));
         pnlRight.add(Box.createVerticalStrut(20));
         pnlRight.add(box9=new Box(BoxLayout.X_AXIS));
-        box9.add(Box.createHorizontalStrut(20));
         model2=new DefaultTableModel(new String[] {"Chọn ngày","Chọn ca","Mã nhân viên","Tên nhân viên"},0);
         table2=new JTable(model2);
         scrollPane2=new JScrollPane(table2);
@@ -178,15 +177,15 @@ public class QuanLyCaLamViec extends JPanel implements ActionListener,MouseListe
         
         
         pnlChiaCa = new JPanel();
-        pnlChiaCa.setLayout(new BoxLayout(pnlChiaCa, BoxLayout.X_AXIS));
+        pnlChiaCa.setLayout(new FlowLayout());
         btnChiaCa = new JButton("Chia ca");
-        btnChiaCa.setPreferredSize(new Dimension(110, 50));
+        btnChiaCa.setPreferredSize(new Dimension(110, 40));
         pnlChiaCa.add(btnChiaCa);
         
         lblngay.setPreferredSize(lblMaNV.getPreferredSize());
         lblCa.setPreferredSize(lblMaNV.getPreferredSize());
         
-        pnlRight.add(Box.createVerticalStrut(40));
+        
         pnlRight.add(pnlNgay);
         pnlRight.add(Box.createVerticalStrut(20));
         pnlRight.add(pnlCa);
@@ -194,7 +193,7 @@ public class QuanLyCaLamViec extends JPanel implements ActionListener,MouseListe
         pnlRight.add(pnlMa);
         pnlRight.add(Box.createVerticalStrut(20));
         pnlRight.add(pnlChiaCa);
-        pnlRight.add(Box.createVerticalStrut(20));
+        pnlRight.add(Box.createVerticalStrut(10));
         
         Dimension d = new Dimension(120, 20);
         lblMaCaLamViec.setPreferredSize(d);
@@ -214,6 +213,19 @@ public class QuanLyCaLamViec extends JPanel implements ActionListener,MouseListe
         btnCapNhat.addActionListener(this);
         btnXoaTrang.addActionListener(this);
         btnChiaCa.addActionListener(this);
+        
+        //phân quyền 
+        if(DangNhap.nhanVienHienTai.getChucVu().getChucVu().equals("Quản lý")) {
+			btnThem.setEnabled(true);
+			btnXoa.setEnabled(true);
+			btnCapNhat.setEnabled(true);
+			btnXoaTrang.setEnabled(true);
+		} else {
+			btnThem.setEnabled(false);
+			btnXoa.setEnabled(false);
+			btnCapNhat.setEnabled(false);
+			btnXoaTrang.setEnabled(false);
+		}
         
         setVisible(true);
     }

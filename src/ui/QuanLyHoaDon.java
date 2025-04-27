@@ -134,6 +134,12 @@ public class QuanLyHoaDon extends JPanel implements ActionListener, MouseListene
 		
 		JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, pLeft, pRight);
 		this.add(splitPane);
+		
+		//phân quyền
+		if(DangNhap.nhanVienHienTai.getChucVu().getChucVu().equals("Nhân viên")) {
+			btnSua.setEnabled(false);
+			btnXoa.setEnabled(false);
+		}
 	}
 	
 	
