@@ -115,7 +115,7 @@ public class BanHang extends JPanel implements ActionListener, MouseListener {
     }
 
     // Hiển thị menu sản phẩm theo loại
-    private void hienThiMenuTheoLoai() {
+    public void hienThiMenuTheoLoai() {
         pMenu.removeAll();
         ConnectDB.getInstance().connect();
         danhSachSanPham = (ArrayList<SanPham>) spdao.getAllSanPham();
