@@ -225,13 +225,20 @@ public class QuanLyNhanVien extends JPanel implements ActionListener,MouseListen
 			String maTaiKhoan=(String) table.getValueAt(row, 5);
 			nhanVienDAO=new NhanVienDAO();
 			taiKhoanDAO=new TaiKhoanDAO();
-			if(nhanVienDAO.xoaNhanVien(maNhanVien)&&taiKhoanDAO.xoaTaiKhoan(maTaiKhoan)) {
+			JOptionPane jop=new JOptionPane();
+			int result=jop.showConfirmDialog(this, "Bạn có chắc chắn muốn xóa nhân viên này không?", "Xóa nhân viên", JOptionPane.YES_NO_OPTION);
+			if(result==JOptionPane.NO_OPTION) {
+					return;
+			}else {
+				if(nhanVienDAO.xoaNhanVien(maNhanVien)&&taiKhoanDAO.xoaTaiKhoan(maTaiKhoan)) {
 				JOptionPane.showMessageDialog(this, "Xóa nhân viên thành công!");
 				loadNhanVien();
-			}else {
-				JOptionPane.showMessageDialog(this, "Xóa nhân viên thất bại!");
-				return;
+				}else {
+					JOptionPane.showMessageDialog(this, "Xóa nhân viên thất bại!");
+					return;
+				}
 			}
+			
 		}
 		
 		if(e.getSource()==btnXoaTrang) {

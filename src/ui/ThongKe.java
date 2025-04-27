@@ -10,6 +10,7 @@ import org.jfree.chart.JFreeChart;
 import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.data.category.DefaultCategoryDataset;
 
+import dao.HoaDonDAO;
 import dao.NhanVienDAO;
 import dao.SanPhamDAO;
 import dao.TaiKhoanDAO;
@@ -19,6 +20,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.time.temporal.WeekFields;
+import java.util.ArrayList;
 
 public class ThongKe extends JPanel implements ActionListener {
 	private JPanel pnlTongQuan;
@@ -45,6 +48,7 @@ public class ThongKe extends JPanel implements ActionListener {
 	private NhanVienDAO nhanVienDAO = new NhanVienDAO();
 	private TaiKhoanDAO taiKhoanDAO = new TaiKhoanDAO();
 	private SanPhamDAO sanPhamDAO = new SanPhamDAO();
+	private static HoaDonDAO hoaDonDAO = new HoaDonDAO();
 	private DefaultCategoryDataset dataset;
 	private JFreeChart chart;
 	private ChartPanel chartPanel;
@@ -80,7 +84,7 @@ public class ThongKe extends JPanel implements ActionListener {
 		pnl4.add(new JLabel(new ImageIcon(resizedImage4)));
 		pnl4.add(lblTienMat=new JLabel("0"));
 		pnlTongQuan.add(pnl5=new JPanel());
-		pnl5.setBorder(new TitledBorder("Hủy đơn hàng"));
+		pnl5.setBorder(new TitledBorder("Sản phẩm bán chạy"));
 		ImageIcon icon5 = new ImageIcon(getClass().getResource("/icon/huydonhang.png"));
 		Image resizedImage5 = icon5.getImage().getScaledInstance(50, 50, Image.SCALE_SMOOTH);
 		pnl5.add(new JLabel(new ImageIcon(resizedImage5)));
@@ -104,15 +108,16 @@ public class ThongKe extends JPanel implements ActionListener {
 		pnl8.add(new JLabel(new ImageIcon(resizedImage8)));
 		pnl8.add(lblTaiKhoan=new JLabel("0"));
 		
-		lblDonHang.setFont(new Font("Arial", Font.BOLD, 40));
-		lblDoanhThu.setFont(new Font("Arial", Font.BOLD, 40));
-		lblSanPham.setFont(new Font("Arial", Font.BOLD, 40));
-		lblTienMat.setFont(new Font("Arial", Font.BOLD, 40));
-		lblHuyDon.setFont(new Font("Arial", Font.BOLD, 40));
-		lblNhanVien.setFont(new Font("Arial", Font.BOLD, 40));
-		lblQuanLy.setFont(new Font("Arial", Font.BOLD, 40));
-		lblTaiKhoan.setFont(new Font("Arial", Font.BOLD, 40));
-		updateLabels();
+		Font font = new Font("Arial", Font.ITALIC, 30);
+		lblDonHang.setFont(font);
+		lblDoanhThu.setFont(font);
+		lblSanPham.setFont(font);
+		lblTienMat.setFont(font);
+		lblHuyDon.setFont(font);
+		lblNhanVien.setFont(font);
+		lblQuanLy.setFont(font);
+		lblTaiKhoan.setFont(font);
+		
 		//Biểu đồ
 		add(pnlBieuDo=new JPanel(), BorderLayout.CENTER);
 		pnlBieuDo.setLayout(new BorderLayout());
@@ -131,32 +136,49 @@ public class ThongKe extends JPanel implements ActionListener {
 	}
 	
 	//Cập nhật các label
-	 private void updateLabels() {
-		lblNhanVien.setText(String.valueOf(nhanVienDAO.demNhanVien()) );
+	 public void loadData() {
+		lblNhanVien.setText(String.valueOf(nhanVienDAO.countEmployee()) );
+		lblQuanLy.setText(String.valueOf(nhanVienDAO.countManager()) );
 		lblTaiKhoan.setText(String.valueOf(taiKhoanDAO.demTaiKhoan()) );
 		lblSanPham.setText(String.valueOf(sanPhamDAO.demSanPham()) );
-		
+		lblDoanhThu.setText(String.valueOf(hoaDonDAO.getTongTien())); // Cập nhật doanh thu
+		lblDonHang.setText(String.valueOf(hoaDonDAO.getSoHoaDon()) );
+		lblTienMat.setText(String.valueOf(hoaDonDAO.getTongTien())); // Cập nhật tiền mặt
+		lblHuyDon.setText(String.valueOf(hoaDonDAO.getSanPhamBanChayNhat()) ); // Cập nhật sản phẩm bán chạy
 	}
 	 
 	 
-	private static DefaultCategoryDataset createDataset(String selectedItem) {
-	        DefaultCategoryDataset dataset = new DefaultCategoryDataset();
-	        
-	        if( selectedItem.equals("Doanh thu theo tuần")) {
-	            for (int i = 1; i <= 7; i++) {
-	                dataset.addValue(100 + i * 10, "Doanh thu", "Tuần " + i);
-	            }
-	        } else if (selectedItem.equals("Doanh thu theo tháng")) {
-	            for (int i = 1; i <= 12; i++) {
-	                dataset.addValue(200 + i * 20, "Doanh thu", "Tháng " + i);
-	            }
-	        } else {
-	            for (int i = 2020; i <= 2023; i++) {
-	                dataset.addValue(300 + (i - 2020) * 30, "Doanh thu", String.valueOf(i));
-	            }
-	        }
-	        return dataset;
-}
+	 private static DefaultCategoryDataset createDataset(String selectedItem) {
+		    DefaultCategoryDataset dataset = new DefaultCategoryDataset();
+		    ArrayList<Double> data = new ArrayList<>();
+
+		    
+		    if (selectedItem.equals("Doanh thu theo tuần")) {
+		        data = hoaDonDAO.getDoanhThu7TuanGanNhat();
+		        int currentWeek = LocalDate.now().get(WeekFields.ISO.weekOfWeekBasedYear());
+		        for (int i = data.size() - 1; i >= 0; i--) {
+		            dataset.addValue(data.get(i), "Doanh thu", "Tuần " + (currentWeek - (data.size() - 1 - i)));
+		        }
+		    } else if (selectedItem.equals("Doanh thu theo tháng")) {
+		        data = hoaDonDAO.getDoanhThu7ThangGanNhat();
+		        int currentMonth = LocalDate.now().getMonthValue();
+		        for (int i = data.size() - 1; i >= 0; i--) {
+		            int month = (currentMonth - (data.size() - 1 - i));
+		            if (month <= 0) month += 12;
+		            dataset.addValue(data.get(i), "Doanh thu", "Tháng " + month);
+		        }
+		    } else {
+		        data = hoaDonDAO.getDoanhThu7NamGanNhat();
+		        int currentYear = LocalDate.now().getYear();
+		        for (int i = data.size() - 1; i >= 0; i--) {
+		            dataset.addValue(data.get(i), "Doanh thu", String.valueOf(currentYear - (data.size() - 1 - i)));
+		        }
+		    }
+
+		    return dataset;
+		}
+
+
 
 	// Tạo biểu đồ từ dataset
 	private static JFreeChart createChart(DefaultCategoryDataset dataset,String selectedItem) {
@@ -203,18 +225,18 @@ public class ThongKe extends JPanel implements ActionListener {
 	    var renderer = plot.getRenderer();
 	    renderer.setSeriesPaint(0, COFFEE); 
 	    // Đổi màu nền biểu đồ
-	    plot.setBackgroundPaint(Color.WHITE); // nền tối
+	    
 	    plot.setDomainGridlinePaint(Color.LIGHT_GRAY);  // đường lưới ngang
 	    plot.setRangeGridlinePaint(Color.LIGHT_GRAY);   // đường lưới dọc
 
-	    // Đổi màu đường viền biểu đồ
-	    plot.setOutlinePaint(Color.GRAY);
+	   
 
 	    // Đổi màu tiêu đề (nếu muốn)
 	    chart.getTitle().setPaint(COFFEE); // màu chữ tiêu đề
 	    
 	    // Đổi màu chữ trong legend (chú thích)
 	    chart.getLegend().setItemPaint(COFFEE); // màu chữ trong legend
+	    
 	}
 
 	@Override

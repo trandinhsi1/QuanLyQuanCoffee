@@ -2,9 +2,6 @@ package ui;
 
 
 import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
@@ -15,7 +12,6 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.text.DecimalFormat;
-import java.text.NumberFormat;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Locale;
@@ -38,11 +34,13 @@ import javax.swing.table.DefaultTableModel;
 import dao.ChiTietHoaDonDAO;
 import dao.ConnectDB;
 import dao.HoaDonDAO;
+import dao.NhanVienDAO;
 import dao.SanPhamDAO;
 import entity.ChiTietHoaDon;
 import entity.HoaDon;
 import entity.NhanVien;
 import entity.SanPham;
+import entity.TaiKhoan;
 
 public class BanHang extends JPanel implements ActionListener, MouseListener{
 	JTextField txtTim = new JTextField();
@@ -58,9 +56,12 @@ public class BanHang extends JPanel implements ActionListener, MouseListener{
 	DefaultTableModel dfModel = new DefaultTableModel(null, column);
 	JTable table = new JTable(dfModel);
 	JLabel lblTongTien = new JLabel("0");
+	QuanLyHoaDon qlhd = new QuanLyHoaDon();
+	private SanPhamDAO spdao=new SanPhamDAO(); 
 	
-	public BanHang() {
-		
+	
+	public BanHang(QuanLyHoaDon qlhd) {	
+		this.qlhd = qlhd;
 		this.setLayout(new BorderLayout());
 		// Phần menu bên trái
 		JPanel pLeft = new JPanel();
@@ -72,10 +73,14 @@ public class BanHang extends JPanel implements ActionListener, MouseListener{
 		p2.setLayout(new BoxLayout(p2, BoxLayout.X_AXIS));
 		JLabel lblMenu = new JLabel("Menu");
 		lblMenu.setFont(new Font("Times new Roman", Font.BOLD, 20));
+		btnTim.setPreferredSize(new Dimension(50, 25));
+		btnTim.setMinimumSize(new Dimension(50, 25));
+		btnTim.setMaximumSize(new Dimension(50, 25));
 		p1.add(lblMenu);
 		p2.add(new JLabel("Tên sản phẩm:"));
 		p2.add(Box.createHorizontalStrut(10));
 		p2.add(txtTim);
+		p2.add(Box.createHorizontalStrut(10));
 		p2.add(btnTim);
 		p2.add(Box.createHorizontalStrut(10));
 		p2.add(new JLabel("Loại sản phẩm:"));
@@ -104,6 +109,9 @@ public class BanHang extends JPanel implements ActionListener, MouseListener{
 		
 		
 		JPanel pSouth = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+		btnXoa.setPreferredSize(new Dimension(60, 30));
+		btnHuy.setPreferredSize(new Dimension(60, 30));
+		btnThanhToan.setPreferredSize(new Dimension(120, 30));
 		
 		
 		pSouth.add(btnXoa);
@@ -246,7 +254,18 @@ public class BanHang extends JPanel implements ActionListener, MouseListener{
 	    pMenu.revalidate();
 	    pMenu.repaint();
 	}
-
+	//load sản phẩm lên bảng
+	public void loadSanPham() {
+		dfModel.setRowCount(0);
+		ArrayList<SanPham> dsSanPham = new ArrayList<SanPham>();
+		dsSanPham=spdao.getAllSanPham();
+		for(SanPham sp : dsSanPham) {
+			Object[] row = {sp.getMaSanPham(), sp.getTenSanPham(), sp.getGiaBan(), 1, sp.getGiaBan()};
+			dfModel.addRow(row);
+		}
+		
+		
+	}
 	
 	@Override
 	public void mouseClicked(MouseEvent e) {
@@ -283,6 +302,11 @@ public class BanHang extends JPanel implements ActionListener, MouseListener{
 			hienThiMenuTheoLoai();
 		}
 		if(e.getSource() == btnHuy) {
+			int row = table.getRowCount();
+			if(row == 0) {
+				JOptionPane.showMessageDialog(this, "Chưa có hóa đơn để hủy");
+				return;
+			}
 			int check = JOptionPane.showConfirmDialog(this, "Lưu ý", "Chắc chắn hủy hóa đơn", JOptionPane.YES_NO_OPTION);
 			if(check == JOptionPane.YES_OPTION) {
 				for(int i = table.getRowCount() - 1; i >= 0 ; i--) {
@@ -330,7 +354,10 @@ public class BanHang extends JPanel implements ActionListener, MouseListener{
 
 			// Tạo hóa đơn mới
 			LocalDate ngayLap = LocalDate.now();
-			NhanVien nv = new NhanVien("NV001"); // mã nhân viên hiện tại đăng nhập chưa biết nên cho NV001
+			TaiKhoan tk = DangNhap.taiKhoanHienTai;
+			NhanVienDAO nv_dao = new NhanVienDAO();
+			String maNV = nv_dao.timNhanVienTheoTaiKhoan(tk);
+			NhanVien nv = new NhanVien(maNV);
 			HoaDon hd = new HoaDon(0, ngayLap, tongTien, nv, dsCTHD);
 
 			// Lưu hóa đơn
@@ -354,6 +381,7 @@ public class BanHang extends JPanel implements ActionListener, MouseListener{
 			} else {
 				JOptionPane.showMessageDialog(this, "Lập hóa đơn thất bại!");
 			}
+			qlhd.doDuLieuVaoBang();
 		}
 		if(e.getSource() == btnTim) {
 			 hienThiMenuTheoTen();

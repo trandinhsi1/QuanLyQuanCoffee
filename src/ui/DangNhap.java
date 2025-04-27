@@ -19,6 +19,7 @@ public class DangNhap extends JFrame implements ActionListener {
     private JPanel pnlButton;
     private JPanel pnl1;
     private JPanel pnl2;
+    public static TaiKhoan taiKhoanHienTai;
 
     // Màu coffee
     private final Color COFFEE = new Color(111, 78, 55);
@@ -100,7 +101,7 @@ public class DangNhap extends JFrame implements ActionListener {
         pnlButton.add(btnDangNhap);
         pnlButton.add(btnThoat);
 
-        lblMatKhau.setPreferredSize(lblTenDangNhap.getPreferredSize());
+        
 
         pnl1 = new JPanel(new BorderLayout(10, 0));
         pnl1.setBackground(Color.WHITE);
@@ -158,8 +159,12 @@ public class DangNhap extends JFrame implements ActionListener {
             TaiKhoanDAO tkDAO = new TaiKhoanDAO();
 
             if (tkDAO.kiemTraTaiKhoan(tenDangNhap, matKhau)) {
+            	// Lưu thông tin tài khoản hiện tại
+				taiKhoanHienTai = tkDAO.timTaiKhoanTheoTenDangNhap(tenDangNhap);
+            	// Đăng nhập thành công, mở giao diện chính
                 new GiaoDien();
                 this.dispose();
+                
             } else {
                 JOptionPane.showMessageDialog(this, 
                     "Tên đăng nhập hoặc mật khẩu không đúng!", 

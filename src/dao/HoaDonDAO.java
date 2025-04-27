@@ -138,4 +138,100 @@ public class HoaDonDAO {
 		}
 		return n > 0;
 	}
+	//lấy doạnh thu 7 tuần gần nhất	
+	public ArrayList<Double> getDoanhThu7TuanGanNhat() {
+		ArrayList<Double> doanhThu = new ArrayList<>();
+		Connection con = ConnectDB.getInstance().getConnection();
+		PreparedStatement stmt = null;
+		try {
+			stmt = con.prepareStatement("SELECT TOP 7 SUM(tongTien) AS DoanhThu FROM HoaDon WHERE ngayLapHD >= DATEADD(WEEK, -6, GETDATE()) GROUP BY DATEPART(WEEK, ngayLapHD) ORDER BY DATEPART(WEEK, ngayLapHD) DESC");
+			ResultSet rs = stmt.executeQuery();
+			while (rs.next()) {
+				doanhThu.add(rs.getDouble("DoanhThu"));
+			}
+		} catch (SQLException ex) {
+			ex.printStackTrace();
+		}
+		return doanhThu;
+	}
+	//lấy doanh thu 7 tháng gần nhất
+	public ArrayList<Double> getDoanhThu7ThangGanNhat() {
+		ArrayList<Double> doanhThu = new ArrayList<>();
+		Connection con = ConnectDB.getInstance().getConnection();
+		PreparedStatement stmt = null;
+		try {
+			stmt = con.prepareStatement("SELECT TOP 7 SUM(tongTien) AS DoanhThu FROM HoaDon WHERE ngayLapHD >= DATEADD(MONTH, -6, GETDATE()) GROUP BY DATEPART(MONTH, ngayLapHD) ORDER BY DATEPART(MONTH, ngayLapHD) DESC");
+			ResultSet rs = stmt.executeQuery();
+			while (rs.next()) {
+				doanhThu.add(rs.getDouble("DoanhThu"));
+			}
+		} catch (SQLException ex) {
+			ex.printStackTrace();
+		}
+		return doanhThu;
+	}
+	//lấy doanh thu 7 năm gần nhất
+	public ArrayList<Double> getDoanhThu7NamGanNhat() {
+		ArrayList<Double> doanhThu = new ArrayList<>();
+		Connection con = ConnectDB.getInstance().getConnection();
+		PreparedStatement stmt = null;
+		try {
+			stmt = con.prepareStatement("SELECT TOP 7 SUM(tongTien) AS DoanhThu FROM HoaDon WHERE ngayLapHD >= DATEADD(YEAR, -6, GETDATE()) GROUP BY DATEPART(YEAR, ngayLapHD) ORDER BY DATEPART(YEAR, ngayLapHD) DESC");
+			ResultSet rs = stmt.executeQuery();
+			while (rs.next()) {
+				doanhThu.add(rs.getDouble("DoanhThu"));
+			}
+		} catch (SQLException ex) {
+			ex.printStackTrace();
+		}
+		return doanhThu;
+	}
+	//lấy tổng doanh thu
+	public double getTongTien() {
+		double tongDoanhThu = 0;
+		Connection con = ConnectDB.getInstance().getConnection();
+		PreparedStatement stmt = null;
+		try {
+			stmt = con.prepareStatement("SELECT SUM(tongTien) AS TongDoanhThu FROM HoaDon");
+			ResultSet rs = stmt.executeQuery();
+			if (rs.next()) {
+				tongDoanhThu = rs.getDouble("TongDoanhThu");
+			}
+		} catch (SQLException ex) {
+			ex.printStackTrace();
+		}
+		return tongDoanhThu;
+	}
+	//lấy tổng số hóa đơn 
+	public int getSoHoaDon() {
+		int tongSoHoaDon = 0;
+		Connection con = ConnectDB.getInstance().getConnection();
+		PreparedStatement stmt = null;
+		try {
+			stmt = con.prepareStatement("SELECT COUNT(*) AS TongSoHoaDon FROM HoaDon");
+			ResultSet rs = stmt.executeQuery();
+			if (rs.next()) {
+				tongSoHoaDon = rs.getInt("TongSoHoaDon");
+			}
+		} catch (SQLException ex) {
+			ex.printStackTrace();
+		}
+		return tongSoHoaDon;
+	}
+	//lấy tên sản phẩm bán chạy nhất
+	public String getSanPhamBanChayNhat() {
+		String tenSanPham = "";
+		Connection con = ConnectDB.getInstance().getConnection();
+		PreparedStatement stmt = null;
+		try {
+			stmt = con.prepareStatement("SELECT TOP 1 s.tenSanPham FROM ChiTietHoaDon cthd JOIN SanPham s ON cthd.maSanPham = s.maSanPham GROUP BY s.tenSanPham ORDER BY SUM(cthd.soLuong) DESC");
+			ResultSet rs = stmt.executeQuery();
+			if (rs.next()) {
+				tenSanPham = rs.getString("tenSanPham");
+			}
+		} catch (SQLException ex) {
+			ex.printStackTrace();
+		}
+		return tenSanPham;
+	}
 }
