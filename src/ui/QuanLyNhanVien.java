@@ -168,7 +168,13 @@ public class QuanLyNhanVien extends JPanel implements ActionListener,MouseListen
 		btnXoa.addActionListener(this);
 		btnXoaTrang.addActionListener(this);
 		btnCapNhat.addActionListener(this);
-		
+		//phân quyền 
+		if(DangNhap.nhanVienHienTai.getChucVu().getChucVu().equals("Nhân viên")) {
+			btnThem.setEnabled(false);
+			btnXoa.setEnabled(false);
+			btnCapNhat.setEnabled(false);
+			btnXoaTrang.setEnabled(false);
+		}
 		
 		add(split=new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, pnlLeft, pnlRight), BorderLayout.CENTER);
 		setVisible(true);
