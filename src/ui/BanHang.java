@@ -22,7 +22,8 @@ public class BanHang extends JPanel implements ActionListener, MouseListener {
     JButton btnHuy = new JButton("Hủy");
     JButton btnThanhToan = new JButton("Thanh toán");
     JLabel lblTongTien = new JLabel("0");
-    JTable table = new JTable(new DefaultTableModel(null, new String[]{"Mã SP", "Tên SP", "Đơn giá", "Số lượng", "Thành tiền"}));
+    DefaultTableModel dfModel = new DefaultTableModel(null, new String[]{"Mã SP", "Tên SP", "Đơn giá", "Số lượng", "Thành tiền"});
+    JTable table = new JTable(dfModel);
     ArrayList<SanPham> danhSachSanPham = new ArrayList<>();
     QuanLyHoaDon qlhd = new QuanLyHoaDon();
     SanPhamDAO spdao = new SanPhamDAO();
@@ -248,7 +249,94 @@ public class BanHang extends JPanel implements ActionListener, MouseListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        // Implement logic here
+    	if(e.getSource() == cboLoaiSanPham) {
+			hienThiMenuTheoLoai();
+		}
+		if(e.getSource() == btnHuy) {
+			int row = table.getRowCount();
+			if(row == 0) {
+				JOptionPane.showMessageDialog(this, "Chưa có hóa đơn để hủy");
+				return;
+			}
+			int check = JOptionPane.showConfirmDialog(this, "Lưu ý", "Chắc chắn hủy hóa đơn", JOptionPane.YES_NO_OPTION);
+			if(check == JOptionPane.YES_OPTION) {
+				for(int i = table.getRowCount() - 1; i >= 0 ; i--) {
+					dfModel.removeRow(i);
+				}
+				lblTongTien.setText("0");
+			}
+		}
+		if(e.getSource() == btnXoa) {
+			int row = table.getSelectedRow();
+			if(row != -1) {
+				int check = JOptionPane.showConfirmDialog(this, "Lưu ý", "Chắc chắn xóa", JOptionPane.YES_NO_OPTION);
+				if(check == JOptionPane.YES_OPTION) {
+					dfModel.removeRow(row);
+				}	
+			}else {
+				JOptionPane.showMessageDialog(this, "Vui lòng chọn một dòng để xóa");
+			}
+			double tongTien = 0;
+            for(int i = 0; i < table.getRowCount(); i++) {
+            	tongTien += Double.parseDouble(table.getValueAt(i, 4).toString());		
+            }
+            DecimalFormat df = new DecimalFormat("#,###");
+            String temp = df.format(tongTien);
+            lblTongTien.setText(String.valueOf(temp));
+		}
+		if (e.getSource() == btnThanhToan) {
+			if(table.getRowCount() == 0) {
+				JOptionPane.showMessageDialog(this, "Chưa có chi tiết hóa đơn");
+				return;
+			}
+			ArrayList<ChiTietHoaDon> dsCTHD = new ArrayList<>();
+			double tongTien = 0;
+			for (int i = 0; i < table.getRowCount(); i++) {
+				String maSP = table.getValueAt(i, 0).toString();
+				double donGia = Double.parseDouble(table.getValueAt(i, 2).toString());
+				int soLuong = Integer.parseInt(table.getValueAt(i, 3).toString());
+				double thanhTien = Double.parseDouble(table.getValueAt(i, 4).toString());
+				tongTien += thanhTien;
+				
+				SanPham sp = new SanPham(maSP);
+				ChiTietHoaDon cthd = new ChiTietHoaDon(null, sp, soLuong, donGia, thanhTien);
+				dsCTHD.add(cthd);
+			}
+
+			// Tạo hóa đơn mới
+			LocalDate ngayLap = LocalDate.now();
+			TaiKhoan tk = DangNhap.taiKhoanHienTai;
+			NhanVienDAO nv_dao = new NhanVienDAO();
+			String maNV = nv_dao.timNhanVienTheoTaiKhoan(tk);
+			NhanVien nv = new NhanVien(maNV);
+			HoaDon hd = new HoaDon(0, ngayLap, tongTien, nv, dsCTHD);
+
+			// Lưu hóa đơn
+			HoaDonDAO hd_dao = new HoaDonDAO();
+			boolean taoHDThanhCong = hd_dao.createHoaDon(hd);
+			if (taoHDThanhCong) {
+				int maHDMoi = hd_dao.getMaHoaDonMoiNhat();
+				HoaDon hoaDonMoi = new HoaDon(maHDMoi);
+
+				ChiTietHoaDonDAO cthd_dao = new ChiTietHoaDonDAO();
+				for (ChiTietHoaDon cthd : dsCTHD) {
+					cthd.setHoaDon(hoaDonMoi);
+					cthd_dao.createChiTietHD(cthd);
+				}
+
+				JOptionPane.showMessageDialog(this, "Lập hóa đơn thành công!");
+
+				// Reset bảng
+				dfModel.setRowCount(0);
+				lblTongTien.setText("0");
+			} else {
+				JOptionPane.showMessageDialog(this, "Lập hóa đơn thất bại!");
+			}
+			qlhd.doDuLieuVaoBang();
+		}
+		if(e.getSource() == btnTim) {
+			 hienThiMenuTheoTen();
+		}
     }
 
     @Override
