@@ -4,10 +4,14 @@ import java.awt.BorderLayout;
 import java.awt.CardLayout;
 import java.awt.Color;
 import java.awt.FlowLayout;
+import java.awt.Font;
 import java.awt.Image;
+import java.awt.Insets;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+
+import javax.swing.Box;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -74,7 +78,7 @@ public class GiaoDien extends JFrame implements ActionListener {
         btnDangXuat = createButton("Đăng Xuất", "/img/dangxuat.png");
 
         // Thêm các nút vào pNav
-        pNav.add(btnBanHang);
+        pNav.add(btnBanHang);    
         pNav.add(btnHoaDon);
         pNav.add(btnSanPham);
         pNav.add(btnThongKe);
@@ -134,6 +138,9 @@ public class GiaoDien extends JFrame implements ActionListener {
         JButton button = new JButton(text, new ImageIcon(getClass().getResource(iconPath)));
         button.setBackground(COFFEE);
         button.setForeground(Color.WHITE);
+        button.setHorizontalAlignment(JButton.LEFT);  // Căn lề trái cho icon và text
+        button.setIconTextGap(30);  // Khoảng cách giữa icon và text
+        button.setFont(new Font("Arial", 0, 18));
         return button;
     }
 

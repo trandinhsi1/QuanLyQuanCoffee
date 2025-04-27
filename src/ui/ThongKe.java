@@ -57,56 +57,73 @@ public class ThongKe extends JPanel implements ActionListener {
 		setLayout(new BorderLayout());
 		
 		//Tổng quan
-		add(pnlTongQuan=new JPanel(), BorderLayout.NORTH);
+		add(pnlTongQuan = new JPanel(), BorderLayout.NORTH);
 		pnlTongQuan.setLayout(new GridLayout(2, 4));
-		pnlTongQuan.add(pnl1=new JPanel() );
+
+		pnlTongQuan.add(pnl1 = new JPanel());
 		pnl1.setBorder(new TitledBorder("Đơn hàng"));
+		pnl1.setLayout(new FlowLayout(FlowLayout.LEFT)); // Căn trái
 		ImageIcon icon1 = new ImageIcon(getClass().getResource("/icon/donhang.png"));
 		Image resizedImage1 = icon1.getImage().getScaledInstance(50, 50, Image.SCALE_SMOOTH);
 		pnl1.add(new JLabel(new ImageIcon(resizedImage1)));
 		pnl1.add(lblDonHang = new JLabel("0"));
-		pnlTongQuan.add(pnl2=new JPanel());
+
+		pnlTongQuan.add(pnl2 = new JPanel());
 		pnl2.setBorder(new TitledBorder("Doanh thu"));
+		pnl2.setLayout(new FlowLayout(FlowLayout.LEFT)); // Căn trái
 		ImageIcon icon2 = new ImageIcon(getClass().getResource("/icon/doanhthu.png"));
 		Image resizedImage2 = icon2.getImage().getScaledInstance(50, 50, Image.SCALE_SMOOTH);
 		pnl2.add(new JLabel(new ImageIcon(resizedImage2)));
 		pnl2.add(lblDoanhThu = new JLabel("0"));
-		pnlTongQuan.add(pnl3=new JPanel());
+
+		pnlTongQuan.add(pnl3 = new JPanel());
 		pnl3.setBorder(new TitledBorder("Sản phẩm"));
+		pnl3.setLayout(new FlowLayout(FlowLayout.LEFT)); // Căn trái
 		ImageIcon icon3 = new ImageIcon(getClass().getResource("/icon/sanpham.png"));
 		Image resizedImage3 = icon3.getImage().getScaledInstance(50, 50, Image.SCALE_SMOOTH);
 		pnl3.add(new JLabel(new ImageIcon(resizedImage3)));
-		pnl3.add(lblSanPham=new JLabel("0"));
-		pnlTongQuan.add(pnl4=new JPanel());
+		pnl3.add(lblSanPham = new JLabel("0"));
+
+		pnlTongQuan.add(pnl4 = new JPanel());
 		pnl4.setBorder(new TitledBorder("Tiền mặt"));
+		pnl4.setLayout(new FlowLayout(FlowLayout.LEFT)); // Căn trái
 		ImageIcon icon4 = new ImageIcon(getClass().getResource("/icon/tienmat.png"));
 		Image resizedImage4 = icon4.getImage().getScaledInstance(50, 50, Image.SCALE_SMOOTH);
 		pnl4.add(new JLabel(new ImageIcon(resizedImage4)));
-		pnl4.add(lblTienMat=new JLabel("0"));
-		pnlTongQuan.add(pnl5=new JPanel());
+		pnl4.add(lblTienMat = new JLabel("0"));
+
+		pnlTongQuan.add(pnl5 = new JPanel());
 		pnl5.setBorder(new TitledBorder("Sản phẩm bán chạy"));
-		ImageIcon icon5 = new ImageIcon(getClass().getResource("/icon/huydonhang.png"));
+		pnl5.setLayout(new FlowLayout(FlowLayout.LEFT)); // Căn trái
+		ImageIcon icon5 = new ImageIcon(getClass().getResource("/icon/spbanchay.png"));
 		Image resizedImage5 = icon5.getImage().getScaledInstance(50, 50, Image.SCALE_SMOOTH);
 		pnl5.add(new JLabel(new ImageIcon(resizedImage5)));
-		pnl5.add(lblHuyDon=new JLabel("0"));
-		pnlTongQuan.add(pnl6=new JPanel());
+		pnl5.add(lblHuyDon = new JLabel("0"));
+
+		pnlTongQuan.add(pnl6 = new JPanel());
 		pnl6.setBorder(new TitledBorder("Nhân viên"));
+		pnl6.setLayout(new FlowLayout(FlowLayout.LEFT)); // Căn trái
 		ImageIcon icon6 = new ImageIcon(getClass().getResource("/icon/nhanvien.png"));
 		Image resizedImage6 = icon6.getImage().getScaledInstance(50, 50, Image.SCALE_SMOOTH);
 		pnl6.add(new JLabel(new ImageIcon(resizedImage6)));
-		pnl6.add(lblNhanVien=new JLabel("0"));
-		pnlTongQuan.add(pnl7=new JPanel());
+		pnl6.add(lblNhanVien = new JLabel("0"));
+
+		pnlTongQuan.add(pnl7 = new JPanel());
 		pnl7.setBorder(new TitledBorder("Quản lý"));
+		pnl7.setLayout(new FlowLayout(FlowLayout.LEFT)); // Căn trái
 		ImageIcon icon7 = new ImageIcon(getClass().getResource("/icon/quanly.png"));
 		Image resizedImage7 = icon7.getImage().getScaledInstance(50, 50, Image.SCALE_SMOOTH);
 		pnl7.add(new JLabel(new ImageIcon(resizedImage7)));
-		pnl7.add(lblQuanLy=new JLabel("0"));
-		pnlTongQuan.add(pnl8=new JPanel());
+		pnl7.add(lblQuanLy = new JLabel("0"));
+
+		pnlTongQuan.add(pnl8 = new JPanel());
 		pnl8.setBorder(new TitledBorder("Tài khoản"));
+		pnl8.setLayout(new FlowLayout(FlowLayout.LEFT)); // Căn trái
 		ImageIcon icon8 = new ImageIcon(getClass().getResource("/icon/taikhoan.png"));
 		Image resizedImage8 = icon8.getImage().getScaledInstance(50, 50, Image.SCALE_SMOOTH);
 		pnl8.add(new JLabel(new ImageIcon(resizedImage8)));
-		pnl8.add(lblTaiKhoan=new JLabel("0"));
+		pnl8.add(lblTaiKhoan = new JLabel("0"));
+
 		
 		Font font = new Font("Arial", Font.ITALIC, 30);
 		lblDonHang.setFont(font);

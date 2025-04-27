@@ -66,6 +66,8 @@ public class DangNhap extends JFrame implements ActionListener {
         lblTenDangNhap.setFont(new Font("Arial", Font.PLAIN, 16));
         lblMatKhau = new JLabel("Mật khẩu:");
         lblMatKhau.setFont(new Font("Arial", Font.PLAIN, 16));
+        lblTenDangNhap.setPreferredSize(new Dimension(120, 30));
+        lblMatKhau.setPreferredSize(new Dimension(120, 30));
 
         // Các trường nhập liệu
         txtTenDangNhap = new JTextField(20);
@@ -139,7 +141,7 @@ public class DangNhap extends JFrame implements ActionListener {
         pnlDangNhap.add(pnl1);
         pnlDangNhap.add(Box.createVerticalStrut(20));
         pnlDangNhap.add(pnl2);
-        pnlDangNhap.add(Box.createVerticalStrut(40));
+        pnlDangNhap.add(Box.createVerticalStrut(20));
         pnlDangNhap.add(pnlButton);
 
         // Thêm sự kiện cho các nút
