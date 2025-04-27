@@ -79,8 +79,6 @@ public class QuanLyCaLamViec extends JPanel implements ActionListener,MouseListe
         setBounds(0, 0, 800, 600);
         setLayout(new BorderLayout());
         
-        
-        
         //Các thao tác với ca làm việc
         add(pnlLeft = new JPanel(), BorderLayout.WEST);
         pnlLeft.setLayout(new BoxLayout(pnlLeft, BoxLayout.Y_AXIS));
@@ -301,8 +299,6 @@ public class QuanLyCaLamViec extends JPanel implements ActionListener,MouseListe
         model2.addRow(new Object[] {formattedDate, selectedCa, selectedMaNV, tenNhanVien});
     }
     
-
-
 	private void themCaLamViec() {
         // TODO Auto-generated method stub
         
