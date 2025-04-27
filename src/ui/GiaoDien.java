@@ -148,7 +148,7 @@ public class GiaoDien extends JFrame implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         // Chuyển đổi các thẻ (card) khi nhấn nút
         if (e.getSource() == btnBanHang) {
-        	
+        	card2.hienThiMenuTheoLoai();
             cardLayout.show(cardPanel, "Card2");
         }
         if (e.getSource() == btnSanPham) {
