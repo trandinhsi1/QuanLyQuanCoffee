@@ -218,6 +218,7 @@ public class QuanLyCaLamViec extends JPanel implements ActionListener,MouseListe
 			btnXoa.setEnabled(true);
 			btnCapNhat.setEnabled(true);
 			btnXoaTrang.setEnabled(true);
+			btnChiaCa.setEnabled(true);
 		} else {
 			btnThem.setEnabled(false);
 			btnXoa.setEnabled(false);

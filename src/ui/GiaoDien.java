@@ -125,6 +125,7 @@ public class GiaoDien extends JFrame implements ActionListener {
         // Phân quyền (ẩn nút Thống kê nếu là nhân viên)
         if (DangNhap.nhanVienHienTai.getChucVu().getChucVu().equals("Nhân viên")) {
             btnThongKe.setEnabled(false);
+            btnNhanVien.setEnabled(false);
         }
 
         // Thêm pWest và cardPanel vào giao diện chính
