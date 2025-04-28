@@ -307,22 +307,33 @@ public class QuanLyNhanVien extends JPanel implements ActionListener,MouseListen
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
-		int row=table.getSelectedRow();
-		if(row<0) {
-			return;
-		}
-		txtMa.setText((String) table.getValueAt(row, 0));
-		txtTen.setText((String) table.getValueAt(row, 1));
-		cbGioiTinh.setSelectedItem((String) table.getValueAt(row, 2));
-		txtSoDienThoai.setText((String) table.getValueAt(row, 3));
-		cbChucVu.setSelectedItem((String) table.getValueAt(row, 4));
-		txtMaTaiKhoan.setText((String) table.getValueAt(row, 5));
-		txtTenDangNhap.setText((String) table.getValueAt(row, 6));
-		txtMatKhau.setText((String) table.getValueAt(row, 7));
-		txtMa.setEditable(false);
-		txtMa.setEnabled(false);
-		txtMaTaiKhoan.setEditable(false);
-		txtMaTaiKhoan.setEnabled(false);
+		 int row = table.getSelectedRow();
+		    if (row >= 0) {
+		        txtMa.setText(model.getValueAt(row, 0).toString());
+		        txtTen.setText(model.getValueAt(row, 1).toString());
+		        cbGioiTinh.setSelectedItem(model.getValueAt(row, 2).toString());
+		        txtSoDienThoai.setText(model.getValueAt(row, 3).toString());
+		        
+		        
+		        String chucVuStr = model.getValueAt(row, 4).toString(); // lấy tên chức vụ từ bảng
+		        for (int i = 0; i < cbChucVu.getItemCount(); i++) {
+		            ChucVu chucVu = cbChucVu.getItemAt(i);
+		            if (chucVu.toString().equals(chucVuStr)) {
+		                cbChucVu.setSelectedItem(chucVu);
+		                break;
+		            }
+		        }
+		        
+		        txtMaTaiKhoan.setText(model.getValueAt(row, 5).toString());
+		        txtTenDangNhap.setText(model.getValueAt(row, 6).toString());
+		        txtMatKhau.setText(model.getValueAt(row, 7).toString());
+
+		        // Khóa sửa mã nhân viên và mã tài khoản
+		        txtMa.setEditable(false);
+		        txtMa.setEnabled(false);
+		        txtMaTaiKhoan.setEditable(false);
+		        txtMaTaiKhoan.setEnabled(false);
+		    }
 		
 	}
 
