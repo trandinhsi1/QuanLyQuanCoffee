@@ -223,7 +223,7 @@ public class QuanLyHoaDon extends JPanel implements ActionListener, MouseListene
 					for(int i = 0; i < tableHD.getRowCount(); i++) {
 						if(Integer.parseInt(tableHD.getValueAt(i, 0).toString()) == maHD) {
 							tableHD.setValueAt(nguoiLapHD, i, 1);
-							tableHD.setValueAt(nguoiLapHD, i, 2);
+							tableHD.setValueAt(ngayLapHD, i, 2);
 							JOptionPane.showMessageDialog(this, "Sửa thành công");
 							return;
 						}

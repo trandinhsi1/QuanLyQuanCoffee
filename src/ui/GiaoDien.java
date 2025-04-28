@@ -22,7 +22,6 @@ import javax.swing.JPanel;
 public class GiaoDien extends JFrame implements ActionListener {
 
     // Khai báo các nút điều hướng
-    private JButton btnTrangChu;
     private JButton btnBanHang;
     private JButton btnSanPham;
     private JButton btnHoaDon;

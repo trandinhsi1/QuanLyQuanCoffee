@@ -143,8 +143,8 @@ public class ThongKe extends JPanel implements ActionListener {
 		pnlNorth.add(cbDoanhThu=new JComboBox<>(columnNames));
 		cbDoanhThu.addActionListener(this);
 		
-		dataset = createDataset("Doanh thu theo tuần");
-		chart=createChart(dataset,"Doanh thu theo tuần");
+		dataset = createDataset("Doanh thu theo năm");
+		chart=createChart(dataset,"Doanh thu theo năm");
 		chartPanel = new ChartPanel(chart);
 		customizeChartColors(chart);
 		pnlBieuDo.add(chartPanel, BorderLayout.CENTER);

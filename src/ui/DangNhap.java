@@ -205,8 +205,8 @@ public class DangNhap extends JFrame implements ActionListener {
             return;
         }
 
-        if (matKhauMoi.length() < 6) {
-            JOptionPane.showMessageDialog(this, "Mật khẩu mới phải có ít nhất 6 ký tự!", "Lỗi", JOptionPane.ERROR_MESSAGE);
+        if (matKhauMoi.length() < 1) {
+            JOptionPane.showMessageDialog(this, "Mật khẩu mới phải có ít nhất 1 ký tự!", "Lỗi", JOptionPane.ERROR_MESSAGE);
             return;
         }
 
